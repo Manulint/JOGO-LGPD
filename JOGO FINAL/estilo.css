@@ -582,57 +582,57 @@ body {
     transform: translate(-50%, -50%);
     background-color: rgba(0, 0, 0, 0.9);
     color: white;
-    padding: 25px;
+    padding: 18px 22px;
     border-radius: 10px;
     text-align: center;
     z-index: 60;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 12px;
     box-shadow: 0 0 30px rgba(65, 105, 225, 0.5); /* Azul PRODERJ */
     border: 3px solid #4169e1; /* Azul PRODERJ */
     width: 90%;
-    max-width: 700px;
-    max-height: 90%;
+    max-width: 640px;
+    max-height: 92%;
     overflow-y: auto;
 }
 
 .painel-perguntas h2 {
     color: #4169e1; /* Azul PRODERJ */
-    font-size: 24px;
-    margin-bottom: 10px;
+    font-size: 20px;
+    margin-bottom: 4px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .pergunta-container {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 12px;
 }
 
 .pergunta-container p {
-    font-size: 16px;
-    line-height: 1.5;
-    margin-bottom: 10px;
+    font-size: 14px;
+    line-height: 1.4;
+    margin-bottom: 4px;
 }
 
 #opcoes-container {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
 }
 
 .opcao-btn {
     background-color: #4169e1; /* Azul PRODERJ */
     color: white;
     border: none;
-    padding: 15px;
+    padding: 11px 13px;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 13px;
     text-align: left;
     transition: all 0.2s;
-    line-height: 1.4;
+    line-height: 1.35;
     font-family: 'Press Start 2P', system-ui, sans-serif;
 }
 
@@ -655,9 +655,9 @@ body {
 .feedback-resposta {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    margin-top: 10px;
-    padding: 15px;
+    gap: 8px;
+    margin-top: 4px;
+    padding: 12px 14px;
     border-radius: 8px;
     background-color: rgba(65, 105, 225, 0.12);
     border: 1px solid rgba(65, 105, 225, 0.5);
@@ -666,17 +666,17 @@ body {
 
 .feedback-resposta .feedback-ok {
     color: #4caf50;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .feedback-resposta .feedback-erro {
     color: #f44336;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .feedback-resposta #feedback-explicacao {
-    font-size: 12px;
-    line-height: 1.6;
+    font-size: 11px;
+    line-height: 1.5;
     color: #eee;
 }
 
@@ -684,7 +684,8 @@ body {
     text-align: center !important;
     background-color: #4caf50 !important;
     align-self: center;
-    min-width: 200px;
+    min-width: 180px;
+    margin-top: 2px;
 }
 
 .btn-continuar-quiz:hover {
