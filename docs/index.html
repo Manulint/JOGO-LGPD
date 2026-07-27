@@ -19,8 +19,12 @@
             <h1 class="titulo-principal">PRODERJ ADVENTURES</h1>
             <p class="descricao-jogo">Uma Jornada pela Transformação Digital do Estado do Rio de Janeiro!</p>
             <div class="input-container">
-                <label for="input-nome">Digite seu nome:</label>
-                <input type="text" id="input-nome" placeholder="Seu nome aqui..." maxlength="20">
+                <label for="input-nome">Seu apelido no jogo:</label>
+                <div class="nick-linha">
+                    <input type="text" id="input-nome" placeholder="Seu apelido..." maxlength="24">
+                    <button type="button" id="btn-sortear-nome" class="btn-dado" title="Sortear outro apelido">🎲</button>
+                </div>
+                <small class="nick-dica">Não precisa usar seu nome real — jogue à vontade! 😉</small>
             </div>
             <button id="btn-comecar" class="btn-pixel">Começar</button>
             <button id="btn-regras" class="btn-pixel btn-secundario">Regras</button>

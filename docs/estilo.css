@@ -228,6 +228,47 @@ body {
     box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
+/* Linha com o campo de apelido + botão de dado */
+.nick-linha {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    align-items: stretch;
+}
+
+.input-container .nick-linha input[type="text"] {
+    flex: 1;
+    width: auto;
+}
+
+.btn-dado {
+    background-color: #4169e1; /* Azul PRODERJ */
+    border: 2px solid #4169e1;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 20px;
+    padding: 0 14px;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+    line-height: 1;
+}
+
+.btn-dado:hover {
+    background-color: #1e3a8a;
+    transform: rotate(-15deg) scale(1.1);
+}
+
+.btn-dado:active {
+    transform: rotate(20deg) scale(0.95);
+}
+
+.nick-dica {
+    font-size: 11px;
+    color: #9aa4bf;
+    text-align: center;
+    line-height: 1.4;
+}
+
 .btn-pixel {
     background-color: #4caf50; /* Verde */
     color: white;

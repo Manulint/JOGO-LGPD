@@ -38,6 +38,30 @@ let intervaloObstaculos = null;
     // Configurações de velocidade
     const velocidadesPorCheckpoint = [2.5, 2.3, 2.1, 1.9, 1.7, 1.5, 1.3, 1.1, 1.0, 0.9];
 
+    // Apelidos aleatórios (para o jogador não precisar usar o nome real)
+    const NICK_ADJETIVOS = [
+        "Turbo", "Veloz", "Ninja", "Cyber", "Épico", "Astuto", "Digital", "Cósmico",
+        "Elétrico", "Fera", "Ágil", "Bravo", "Furtivo", "Radical", "Lendário",
+        "Blindado", "Quântico", "Sagaz", "Rápido", "Mestre"
+    ];
+    const NICK_SUBSTANTIVOS = [
+        "Robô", "Byte", "Pixel", "Chip", "Dado", "Bit", "Drone", "Foguete", "Raio",
+        "Cometa", "Trovão", "Falcão", "Tigre", "Dragão", "Lobo", "Coruja", "Panda",
+        "Golfinho", "Jacaré", "Circuito"
+    ];
+
+    function gerarApelidoAleatorio() {
+        const a = NICK_ADJETIVOS[Math.floor(Math.random() * NICK_ADJETIVOS.length)];
+        const s = NICK_SUBSTANTIVOS[Math.floor(Math.random() * NICK_SUBSTANTIVOS.length)];
+        const n = Math.floor(Math.random() * 900) + 100; // 100-999, evita apelidos repetidos
+        return `${a}${s}${n}`;
+    }
+
+    function sortearApelido() {
+        const inputNome = document.getElementById("input-nome");
+        if (inputNome) inputNome.value = gerarApelidoAleatorio();
+    }
+
     // Tipos de obstáculos
     const tiposObstaculos = {
         CANO_BAIXO: "cano-baixo",
@@ -139,6 +163,11 @@ function verificarVitoria() {
         document.getElementById("btn-comecar").addEventListener("click", iniciarJogoComNome);
         document.getElementById("btn-regras").addEventListener("click", abrirRegras);
         document.getElementById("fechar-regras").addEventListener("click", fecharRegras);
+
+        // Botão de dado: sorteia um novo apelido
+        document.getElementById("btn-sortear-nome").addEventListener("click", sortearApelido);
+        // Já começa com um apelido aleatório preenchido
+        sortearApelido();
 
         document.getElementById("btn-pause").addEventListener("click", togglePause);
         document.getElementById("btn-continuar").addEventListener("click", togglePause);
