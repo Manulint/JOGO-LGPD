@@ -7,7 +7,7 @@ class API {
   // RANKING COMPARTILHADO (Google Sheets via Google Apps Script)
   // Cole aqui a URL do seu Web App (termina em /exec).
   // Deixe "" para usar apenas o ranking local deste navegador.
-  static RANKING_URL = "";
+  static RANKING_URL = "https://script.google.com/macros/s/AKfycbzC8d7TfxVbC20KQAQm6dG-B4YQ4YJFrkp9CygBQKzZxhli6UGeaeQCl-Vy5KSu_Ceb/exec";
   // ============================================================
 
   // Salva a pontuação no ranking. Tenta o Google Sheets (se configurado)
