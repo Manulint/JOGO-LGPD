@@ -823,12 +823,11 @@ function pular() {
         Mario.style.width = "150px"; // Ajustar tamanho se necessário
         Mario.style.bottom = "0"; // Garantir que esteja no chão
 
-        // Flash vermelho forte + tela em preto e branco (clima de derrota)
+        // Flash vermelho rápido (leve) ao perder
         const flash = document.createElement('div');
         flash.className = 'flash-dano-forte';
         telaJogo.appendChild(flash);
         setTimeout(() => flash.remove(), 600);
-        telaJogo.classList.add('tela-cinza');
 
         const painelGameOver = document.querySelector(".painel-game-over");
        const pontuacaoFinal = calcularPontuacao(); // calcular antes de usar
@@ -839,7 +838,6 @@ function pular() {
         const animacaoContainer = document.getElementById("animacao-game-over");
         animacaoContainer.innerHTML = `
             <img src="imagens/game over robo.png" class="img-game-over">
-            <div class="texto-game-over">FIM DE JOGO</div>
             <div class="subtexto-game-over">Quase lá! Bora de novo? 💪</div>
         `;
 

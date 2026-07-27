@@ -528,10 +528,10 @@
 .flash-dano-forte {
     position: absolute;
     inset: 0;
-    background: rgba(220, 0, 0, 0.55);
+    background: rgba(220, 0, 0, 0.38);
     pointer-events: none;
     z-index: 90;
-    animation: flashVermelhoForte 0.6s ease-out forwards;
+    animation: flashVermelhoForte 0.5s ease-out forwards;
 }
 @keyframes flashVermelhoForte {
     0% { opacity: 0; }
