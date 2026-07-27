@@ -651,6 +651,52 @@ body {
     border: 2px solid #fff;
 }
 
+/* --- Feedback / explicação após responder --- */
+.feedback-resposta {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 10px;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: rgba(65, 105, 225, 0.12);
+    border: 1px solid rgba(65, 105, 225, 0.5);
+    animation: aparecerFeedback 0.3s ease-out;
+}
+
+.feedback-resposta .feedback-ok {
+    color: #4caf50;
+    font-size: 16px;
+}
+
+.feedback-resposta .feedback-erro {
+    color: #f44336;
+    font-size: 16px;
+}
+
+.feedback-resposta #feedback-explicacao {
+    font-size: 12px;
+    line-height: 1.6;
+    color: #eee;
+}
+
+.btn-continuar-quiz {
+    text-align: center !important;
+    background-color: #4caf50 !important;
+    align-self: center;
+    min-width: 200px;
+}
+
+.btn-continuar-quiz:hover {
+    background-color: #388e3c !important;
+    transform: none;
+}
+
+@keyframes aparecerFeedback {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
 /* --- Modal de Regras --- */
 .modal {
     display: none;

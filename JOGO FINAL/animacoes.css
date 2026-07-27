@@ -466,3 +466,28 @@
     }
 }
 
+
+/* --- Feedback flutuante de pontuação ("-150", "Imunidade!") --- */
+.feedback-flutuante {
+    position: absolute;
+    top: 38%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Press Start 2P', system-ui, sans-serif;
+    font-size: 22px;
+    font-weight: bold;
+    pointer-events: none;
+    z-index: 70;
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.7);
+    animation: subirEsvaecer 1s ease-out forwards;
+    white-space: nowrap;
+}
+
+.feedback-flutuante.negativo { color: #ff5252; }
+.feedback-flutuante.positivo { color: #4dff88; }
+
+@keyframes subirEsvaecer {
+    0%   { opacity: 0; transform: translate(-50%, 0) scale(0.7); }
+    20%  { opacity: 1; transform: translate(-50%, -20px) scale(1.15); }
+    100% { opacity: 0; transform: translate(-50%, -90px) scale(1); }
+}

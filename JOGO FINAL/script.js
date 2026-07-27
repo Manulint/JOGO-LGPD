@@ -389,6 +389,11 @@ function verificarVitoria() {
             <div class="pergunta-container">
                 <p id="pergunta-texto">Pergunta aparecerá aqui</p>
                 <div id="opcoes-container"></div>
+                <div id="feedback-resposta" class="feedback-resposta" style="display: none;">
+                    <p id="feedback-titulo"></p>
+                    <p id="feedback-explicacao"></p>
+                    <button id="btn-continuar-quiz" class="opcao-btn btn-continuar-quiz">Continuar ▶</button>
+                </div>
             </div>
         `;
         telaJogo.appendChild(painelPerguntas);
@@ -561,32 +566,67 @@ iniciarGeracaoObstaculos();
         document.getElementById("pergunta-texto").textContent = pergunta.pergunta;
         const opcoesContainer = document.getElementById("opcoes-container");
         opcoesContainer.innerHTML = "";
-        
+        opcoesContainer.style.display = "";
+
+        // Esconde o feedback/explicação da pergunta anterior
+        const feedback = document.getElementById("feedback-resposta");
+        if (feedback) feedback.style.display = "none";
+
         pergunta.opcoes.forEach((opcao, index) => {
             const botao = document.createElement("button");
             botao.className = "opcao-btn";
             botao.textContent = opcao;
             botao.dataset.index = index;
-            botao.addEventListener("click", () => verificarResposta(index, pergunta.resposta));
+            botao.addEventListener("click", () => verificarResposta(index, pergunta));
             opcoesContainer.appendChild(botao);
         });
         document.querySelector(".painel-perguntas").style.display = "flex";
     }
 
-     function verificarResposta(respostaUsuario, respostaCorreta) {
-    const botoes = document.querySelectorAll(".opcao-btn");
+     function verificarResposta(respostaUsuario, pergunta) {
+    const respostaCorreta = pergunta.resposta;
+    const acertou = respostaUsuario === respostaCorreta;
+
+    const botoes = document.querySelectorAll("#opcoes-container .opcao-btn");
     botoes.forEach(botao => {
         botao.disabled = true;
         const index = parseInt(botao.dataset.index);
         if (index === respostaCorreta) {
             botao.classList.add("resposta-correta");
-        } else if (index === respostaUsuario && respostaUsuario !== respostaCorreta) {
+        } else if (index === respostaUsuario && !acertou) {
             botao.classList.add("resposta-incorreta");
         }
     });
 
-    if (respostaUsuario === respostaCorreta) {
-        setTimeout(() => {
+    // Ao errar, desconta vida/pontos na hora
+    if (!acertou) {
+        criarAnimacaoPerderVida();
+        telaJogo.classList.add('tela-tremendo');
+        setTimeout(() => telaJogo.classList.remove('tela-tremendo'), 300);
+
+        vidas--;
+        atualizarVidasUI();
+        pontuacao = Math.max(0, pontuacao - PENALIDADE_POR_VIDA); // desconta ao errar a pergunta
+        atualizarDisplayPontuacao();
+        mostrarFeedbackFlutuante(`-${PENALIDADE_POR_VIDA}`, 'negativo');
+    }
+
+    // Mostra a explicação e espera o jogador clicar em "Continuar"
+    const feedback = document.getElementById("feedback-resposta");
+    const titulo = document.getElementById("feedback-titulo");
+    const explicacao = document.getElementById("feedback-explicacao");
+
+    titulo.textContent = acertou ? "✅ Correto!" : "❌ Resposta incorreta";
+    titulo.className = acertou ? "feedback-ok" : "feedback-erro";
+    explicacao.textContent = pergunta.explicacao || "";
+    feedback.style.display = "flex";
+
+    const btnContinuar = document.getElementById("btn-continuar-quiz");
+    btnContinuar.onclick = () => {
+        feedback.style.display = "none";
+
+        if (acertou) {
+            // Acertou: volta ao jogo com imunidade
             document.querySelector(".painel-perguntas").style.display = "none";
             jogoAtivo = true;
             perguntaAtiva = false;
@@ -594,32 +634,16 @@ iniciarGeracaoObstaculos();
             intervaloColisao = setInterval(verificarColisao, 20);
             iniciarGeracaoObstaculos();
             ativarImunidade(tempoImunidade);
-        }, 1500);
-    } else {
-        // Adicionar animação de perder vida ao errar pergunta
-        criarAnimacaoPerderVida();
-        
-        // Tremor na tela
-        telaJogo.classList.add('tela-tremendo');
-        setTimeout(() => telaJogo.classList.remove('tela-tremendo'), 300);
-        
-        vidas--;
-        atualizarVidasUI();
-        pontuacao = Math.max(0, pontuacao - PENALIDADE_POR_VIDA); // desconta ao errar a pergunta
-        atualizarDisplayPontuacao();
-
-        if (vidas <= 0) {
-            setTimeout(() => {
-                document.querySelector(".painel-perguntas").style.display = "none";
-                gameOver();
-            }, 1500);
+            mostrarFeedbackFlutuante("Imunidade!", 'positivo');
+        } else if (vidas <= 0) {
+            // Errou e acabaram as vidas
+            document.querySelector(".painel-perguntas").style.display = "none";
+            gameOver();
         } else {
-            setTimeout(() => {
-                // Show new question if still has lives
-                mostrarPergunta();
-            }, 1500);
+            // Errou mas ainda tem vidas: nova pergunta no mesmo checkpoint
+            mostrarPergunta();
         }
-    }
+    };
 }
 
 function atualizarVidasUI() {
@@ -660,6 +684,7 @@ function atualizarVidasUI() {
             atualizarVidasUI();
             pontuacao = Math.max(0, pontuacao - PENALIDADE_POR_VIDA); // desconta ao bater no obstáculo
             atualizarDisplayPontuacao();
+            mostrarFeedbackFlutuante(`-${PENALIDADE_POR_VIDA}`, 'negativo');
             obstaculo.remove();
             
             if (vidas <= 0) {
@@ -899,6 +924,18 @@ function calcularPontuacao() {
 function atualizarDisplayPontuacao() {
     const el = document.getElementById("contador-pontuacao");
     if (el) el.textContent = calcularPontuacao();
+}
+
+// Mostra um texto que sobe e some sobre o jogo (ex: "-150" ao errar,
+// "Imunidade!" ao acertar). Dá aquele "gostinho" de feedback ao jogador.
+function mostrarFeedbackFlutuante(texto, tipo) {
+    if (!telaJogo) return;
+    const el = document.createElement("div");
+    el.className = `feedback-flutuante ${tipo}`;
+    el.textContent = texto;
+    telaJogo.appendChild(el);
+    // Remove o elemento após a animação terminar
+    setTimeout(() => el.remove(), 1000);
 }
 
 }); // Fim do DOMContentLoaded
