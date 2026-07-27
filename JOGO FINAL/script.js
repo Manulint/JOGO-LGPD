@@ -13,7 +13,8 @@ const BONUS_CONCLUSAO = 500;
 let tempoInicioJogo = 0;
 let tempoFimJogo = 0;
     let Mario;
-    let pontuacao = 0;
+    let pontuacao = 0;   // placar mostrado (sobe jogando, cai ao perder vida)
+    let distancia = 0;   // progresso interno que dispara os checkpoints (só sobe)
     let checkpointAtual = 0;
     let checkpoints = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
     let jogoAtivo = false;
@@ -345,7 +346,7 @@ function verificarVitoria() {
         if (checkpointAtual >= 10) return;
 
         const proximoCheckpoint = checkpoints[checkpointAtual];
-        const progresso = (pontuacao - (checkpointAtual > 0 ? checkpoints[checkpointAtual - 1] : 0)) /
+        const progresso = (distancia - (checkpointAtual > 0 ? checkpoints[checkpointAtual - 1] : 0)) /
                          (proximoCheckpoint - (checkpointAtual > 0 ? checkpoints[checkpointAtual - 1] : 0));
 
         const barra = document.getElementById("checkpoint-bar");
@@ -410,6 +411,7 @@ function verificarVitoria() {
     function iniciarJogo() {
         // Resetar variáveis
     pontuacao = 0;
+    distancia = 0;
     checkpointAtual = 0;
     ultimoCheckpoint = 0;
     faseAtual = 1;
@@ -483,6 +485,7 @@ iniciarGeracaoObstaculos();
     
     // Continuar do último checkpoint
     pontuacao = ultimoCheckpoint;
+    distancia = ultimoCheckpoint;
     faseAtual = checkpointAtual + 1;
     atualizarDisplayPontuacao();
     //document.getElementById("contador-fase").textContent = faseAtual;
@@ -509,14 +512,15 @@ iniciarGeracaoObstaculos();
     function atualizarPontuacao() {
     if (!jogoAtivo || perguntaAtiva) return;
 
-    pontuacao++;
+    pontuacao++;   // placar sobe
+    distancia++;   // progresso sobe
     atualizarDisplayPontuacao();
     atualizarBarraCheckpoint();
 
-    // Verificar checkpoint (every 100 points)
-    if (checkpoints.includes(pontuacao)) {
-        checkpointAtual = checkpoints.indexOf(pontuacao) + 1;
-        ultimoCheckpoint = pontuacao;
+    // Verificar checkpoint (a cada 100 de progresso)
+    if (checkpoints.includes(distancia)) {
+        checkpointAtual = checkpoints.indexOf(distancia) + 1;
+        ultimoCheckpoint = distancia;
         document.getElementById("contador-checkpoint").textContent = `${checkpointAtual}/10`;
         atingirCheckpoint();
         
@@ -601,7 +605,8 @@ iniciarGeracaoObstaculos();
         
         vidas--;
         atualizarVidasUI();
-        atualizarDisplayPontuacao(); // desconta na hora ao errar a pergunta
+        pontuacao = Math.max(0, pontuacao - PENALIDADE_POR_VIDA); // desconta ao errar a pergunta
+        atualizarDisplayPontuacao();
 
         if (vidas <= 0) {
             setTimeout(() => {
@@ -653,7 +658,8 @@ function atualizarVidasUI() {
             
             vidas--;
             atualizarVidasUI();
-            atualizarDisplayPontuacao(); // desconta na hora ao bater no obstáculo
+            pontuacao = Math.max(0, pontuacao - PENALIDADE_POR_VIDA); // desconta ao bater no obstáculo
+            atualizarDisplayPontuacao();
             obstaculo.remove();
             
             if (vidas <= 0) {
@@ -880,15 +886,13 @@ function agendarProximoObstaculo() {
     
 
 // Pontuação ÚNICA do jogo.
-// Quanto mais longe o jogador chega, mais pontos; cada vida perdida
-// (bater em obstáculo ou errar pergunta) desconta PENALIDADE_POR_VIDA.
-// Assim, quem chega ao fim perdendo menos vidas fica com nota maior.
+// O placar (pontuacao) sobe enquanto o jogador avança e cai
+// PENALIDADE_POR_VIDA a cada vida perdida (bater ou errar), mas nunca
+// trava: continua subindo a partir do valor descontado. Ao completar
+// todos os checkpoints, soma BONUS_CONCLUSAO.
 function calcularPontuacao() {
-    const vidasPerdidas = totalVidas - vidas;
     const bonusConclusao = checkpointAtual >= 10 ? BONUS_CONCLUSAO : 0;
-
-    const total = pontuacao + bonusConclusao - (vidasPerdidas * PENALIDADE_POR_VIDA);
-    return Math.max(0, Math.floor(total)); // Nunca fica negativa
+    return Math.max(0, Math.floor(pontuacao + bonusConclusao)); // Nunca fica negativa
 }
 
 // Atualiza o número mostrado na tela com a pontuação atual (já com descontos).
