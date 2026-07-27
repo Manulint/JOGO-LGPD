@@ -669,11 +669,13 @@ body {
 .modal-conteudo {
     background-color: #222;
     margin: auto;
-    padding: 30px;
+    padding: 24px 30px;
     border: 3px solid #4169e1;
     border-radius: 10px;
     width: 90%;
-    max-width: 700px;
+    max-width: 620px;
+    max-height: 85vh;
+    overflow-y: auto;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
     position: relative;
     color: #eee;
@@ -703,14 +705,14 @@ body {
 .modal-conteudo h2 {
     color: #4169e1;
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 16px;
     font-size: 24px;
 }
 
 .regras-texto p {
     font-size: 14px;
-    line-height: 1.6;
-    margin-bottom: 15px;
+    line-height: 1.5;
+    margin-bottom: 10px;
 }
 
 .regras-texto strong {
