@@ -45,11 +45,10 @@ let intervaloObstaculos = null;
     telaVitoria.className = 'tela-vitoria';
     telaVitoria.id = 'tela-vitoria';
 
-    // Cálculo da pontuação final
+    // Cálculo da pontuação final — usa a MESMA fórmula da morte, para ser consistente
     let tempoTotal = Math.floor((tempoFimJogo - tempoInicioJogo) / 1000);
     let vidasPerdidas = totalVidas - vidas;
-    pontuacaoFinal = 10000 - (tempoTotal * 10) - (vidasPerdidas * 500);
-    pontuacaoFinal = Math.max(0, pontuacaoFinal); // Evita pontuação negativa
+    const pontuacaoFinal = calcularPontuacaoAjustada();
 
     telaVitoria.innerHTML = `
         <div class="mensagem-vitoria">
@@ -82,6 +81,7 @@ function verificarVitoria() {
     if (checkpointAtual >= 10) {
         pararJogo();
         tempoFimJogo = Date.now();
+        const pontuacaoFinal = calcularPontuacaoAjustada();
         criarAnimacaoVitoria();
 
         // Registrar pontuação usando pontuacaoFinal
@@ -878,13 +878,26 @@ function agendarProximoObstaculo() {
     
 
 function calcularPontuacaoAjustada() {
+    // ---- O PROGRESSO É O QUE MAIS VALE ----
+    // Quanto mais longe o jogador chegou, maior a pontuação — mesmo que ele morra.
+    const pontosProgresso = pontuacao;                        // distância percorrida (até ~1000)
+    const bonusCheckpoints = checkpointAtual * 300;           // cada checkpoint alcançado vale bônus
+    const bonusConclusao = checkpointAtual >= 10 ? 2000 : 0;  // completou todos os checkpoints
+
+    const pontuacaoBase = pontosProgresso + bonusCheckpoints + bonusConclusao;
+
+    // ---- PENALIDADES LEVES E LIMITADAS ----
+    // Recompensam eficiência (menos tempo / menos vidas perdidas),
+    // mas NUNCA podem zerar uma boa jogada.
     const tempoAtual = Date.now();
     const tempoTotal = Math.floor((tempoAtual - tempoInicioJogo) / 1000);
     const vidasPerdidas = totalVidas - vidas;
 
-    let pontuacaoBase = pontuacao; // Progresso no jogo
-    let pontuacaoAjustada = pontuacaoBase - (tempoTotal * 2) - (vidasPerdidas * 100);
-    return Math.max(0, Math.floor(pontuacaoAjustada)); // Garante que não fique negativa
+    let penalidade = tempoTotal + (vidasPerdidas * 50);
+    // A penalidade nunca tira mais que 40% do que o jogador já conquistou.
+    penalidade = Math.min(penalidade, Math.floor(pontuacaoBase * 0.4));
+
+    return Math.max(0, Math.floor(pontuacaoBase - penalidade)); // Garante que não fique negativa
 }
 
 }); // Fim do DOMContentLoaded
