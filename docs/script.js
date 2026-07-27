@@ -69,28 +69,36 @@ let intervaloObstaculos = null;
         CANO_ALTO: "cano-alto"
     };
 
-    function criarAnimacaoVitoria() {
+    function criarAnimacaoVitoria(pontuacaoFinal, posicao) {
     const telaVitoria = document.createElement('div');
     telaVitoria.className = 'tela-vitoria';
     telaVitoria.id = 'tela-vitoria';
 
-    // Cálculo da pontuação final — usa a MESMA fórmula da morte, para ser consistente
     let tempoTotal = Math.floor((tempoFimJogo - tempoInicioJogo) / 1000);
     let vidasPerdidas = totalVidas - vidas;
-    const pontuacaoFinal = calcularPontuacao();
+
+    const posicaoHtml = posicao
+        ? `<p class="vitoria-posicao">🏅 Você ficou em ${posicao}º lugar!</p>`
+        : `<p class="vitoria-posicao">Confira sua marca no ranking!</p>`;
 
     telaVitoria.innerHTML = `
         <div class="mensagem-vitoria">
+            <div class="trofeu-vitoria">🏆</div>
             <h2>PARABÉNS!</h2>
             <p>Você completou todos os 10 checkpoints!</p>
-            <p>Tempo: ${tempoTotal} segundos</p>
-            <p>Vidas perdidas: ${vidasPerdidas}</p>
-            <p><strong>Pontuação final: ${pontuacaoFinal}</strong></p>
+            <p>Tempo: ${tempoTotal}s &nbsp;•&nbsp; Vidas perdidas: ${vidasPerdidas}</p>
+            <p class="vitoria-pontos"><strong>Pontuação: <span id="contador-vitoria">0</span></strong></p>
+            ${posicaoHtml}
             <button id="btn-vitoria" class="btn-vitoria">Voltar ao Menu</button>
         </div>
     `;
 
     document.body.appendChild(telaVitoria);
+
+    // Flash dourado
+    const flash = document.createElement('div');
+    flash.className = 'flash-vitoria';
+    telaVitoria.appendChild(flash);
 
     for (let i = 0; i < 100; i++) {
         const confetti = document.createElement('div');
@@ -103,25 +111,52 @@ let intervaloObstaculos = null;
 
     telaVitoria.style.display = 'flex';
 
+    // Pontuação "subindo" de 0 até o total
+    animarContagem(document.getElementById('contador-vitoria'), pontuacaoFinal, 1400);
+
     document.getElementById('btn-vitoria').addEventListener('click', voltarAoMenu);
 }
 
-function verificarVitoria() {
+// Anima um número de 0 até 'alvo' ao longo de 'duracao' ms
+function animarContagem(el, alvo, duracao) {
+    if (!el) return;
+    const inicio = performance.now();
+    function passo(agora) {
+        const t = Math.min(1, (agora - inicio) / duracao);
+        el.textContent = Math.floor(t * alvo);
+        if (t < 1) requestAnimationFrame(passo);
+        else el.textContent = alvo;
+    }
+    requestAnimationFrame(passo);
+}
+
+// Descobre a posição do jogador no ranking (ou null se não estiver no top 10)
+async function obterPosicaoRanking(nome, pontuacao) {
+    try {
+        const { ranking } = await API.obterRanking();
+        const idx = ranking.findIndex(r => r.nome === nome && Number(r.pontuacao) === Number(pontuacao));
+        return idx >= 0 ? idx + 1 : null;
+    } catch (e) {
+        return null;
+    }
+}
+
+async function verificarVitoria() {
     if (checkpointAtual >= 10) {
         pararJogo();
         tempoFimJogo = Date.now();
         const pontuacaoFinal = calcularPontuacao();
-        criarAnimacaoVitoria();
 
-        // Registrar pontuação usando pontuacaoFinal
+        // Salva a pontuação e atualiza o ranking antes de mostrar a colocação
         if (nomeUsuario) {
-            API.salvarPontuacao(nomeUsuario, pontuacaoFinal, checkpointAtual)
-                .then(() => {
-                    if (rankingManager) {
-                        rankingManager.atualizarRanking();
-                    }
-                });
+            await API.salvarPontuacao(nomeUsuario, pontuacaoFinal, checkpointAtual);
+            if (rankingManager) {
+                await rankingManager.atualizarRanking();
+            }
         }
+
+        const posicao = await obterPosicaoRanking(nomeUsuario, pontuacaoFinal);
+        criarAnimacaoVitoria(pontuacaoFinal, posicao);
     }
 }
 
@@ -430,6 +465,7 @@ function verificarVitoria() {
 
    function voltarAoMenu() {
     pararJogo();
+    telaJogo.classList.remove('tela-cinza'); // remove o preto e branco do game over
     telaJogo.style.display = "none";
     telaInicial.style.display = "block";
     
@@ -459,6 +495,7 @@ function verificarVitoria() {
 
     // Garantir que o painel de pause está escondido
     document.getElementById("painel-pause").style.display = "none";
+    telaJogo.classList.remove('tela-cinza'); // remove o preto e branco do game over
 // Reset Mario
     Mario.src = "imagens/battlebot_run.gif";
     Mario.style.width = "200px";
@@ -575,7 +612,17 @@ iniciarGeracaoObstaculos();
     function atingirCheckpoint() {
         pararJogo();
         perguntaAtiva = true;
-        mostrarPergunta();
+        criarAnimacaoCheckpoint();
+        // Dá um instante para o jogador ver o "CHECKPOINT!" antes da pergunta
+        setTimeout(() => mostrarPergunta(), 1000);
+    }
+
+    function criarAnimacaoCheckpoint() {
+        const el = document.createElement('div');
+        el.className = 'animacao-checkpoint';
+        el.innerHTML = `⭐ CHECKPOINT ${checkpointAtual}/10 ⭐`;
+        telaJogo.appendChild(el);
+        setTimeout(() => el.remove(), 1200);
     }
 
     function mostrarPergunta() {
@@ -726,19 +773,20 @@ function atualizarVidasUI() {
 }
 
 function criarAnimacaoPerderVida() {
-    const animacao = document.createElement('div');
-    animacao.className = 'animacao-perder-vida';
-    
-    const mensagem = document.createElement('div');
-    mensagem.className = 'mensagem-perder-vida';
-    mensagem.textContent = `-1 VIDA!`;
-    animacao.appendChild(mensagem);
-    
-    document.body.appendChild(animacao);
-    
-    setTimeout(() => {
-        animacao.remove();
-    }, 1000);
+    const alvo = telaJogo || document.body;
+
+    // Coração partido subindo e sumindo
+    const coracao = document.createElement('div');
+    coracao.className = 'coracao-partido';
+    coracao.textContent = '💔';
+    alvo.appendChild(coracao);
+    setTimeout(() => coracao.remove(), 1000);
+
+    // Vinheta vermelha piscando nas bordas (efeito de dano)
+    const vinheta = document.createElement('div');
+    vinheta.className = 'vinheta-dano';
+    alvo.appendChild(vinheta);
+    setTimeout(() => vinheta.remove(), 600);
 }
 
 function pular() {
@@ -775,6 +823,13 @@ function pular() {
         Mario.style.width = "150px"; // Ajustar tamanho se necessário
         Mario.style.bottom = "0"; // Garantir que esteja no chão
 
+        // Flash vermelho forte + tela em preto e branco (clima de derrota)
+        const flash = document.createElement('div');
+        flash.className = 'flash-dano-forte';
+        telaJogo.appendChild(flash);
+        setTimeout(() => flash.remove(), 600);
+        telaJogo.classList.add('tela-cinza');
+
         const painelGameOver = document.querySelector(".painel-game-over");
        const pontuacaoFinal = calcularPontuacao(); // calcular antes de usar
        document.getElementById("pontuacao-final").textContent = pontuacaoFinal;
@@ -784,7 +839,8 @@ function pular() {
         const animacaoContainer = document.getElementById("animacao-game-over");
         animacaoContainer.innerHTML = `
             <img src="imagens/game over robo.png" class="img-game-over">
-            <div class="texto-game-over">Fim de Jogo!</div>
+            <div class="texto-game-over">FIM DE JOGO</div>
+            <div class="subtexto-game-over">Quase lá! Bora de novo? 💪</div>
         `;
 
         // Registrar pontuação
