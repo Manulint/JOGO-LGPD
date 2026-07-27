@@ -6,6 +6,10 @@ document.addEventListener("DOMContentLoaded", function() {
     const modalRegras = document.getElementById("modal-regras");
     let vidas = 4;
 const totalVidas = 4;
+// Pontos descontados a cada vida perdida (bater em obstáculo ou errar pergunta)
+const PENALIDADE_POR_VIDA = 150;
+// Bônus por completar todos os 10 checkpoints
+const BONUS_CONCLUSAO = 500;
 let tempoInicioJogo = 0;
 let tempoFimJogo = 0;
     let Mario;
@@ -48,7 +52,7 @@ let intervaloObstaculos = null;
     // Cálculo da pontuação final — usa a MESMA fórmula da morte, para ser consistente
     let tempoTotal = Math.floor((tempoFimJogo - tempoInicioJogo) / 1000);
     let vidasPerdidas = totalVidas - vidas;
-    const pontuacaoFinal = calcularPontuacaoAjustada();
+    const pontuacaoFinal = calcularPontuacao();
 
     telaVitoria.innerHTML = `
         <div class="mensagem-vitoria">
@@ -81,7 +85,7 @@ function verificarVitoria() {
     if (checkpointAtual >= 10) {
         pararJogo();
         tempoFimJogo = Date.now();
-        const pontuacaoFinal = calcularPontuacaoAjustada();
+        const pontuacaoFinal = calcularPontuacao();
         criarAnimacaoVitoria();
 
         // Registrar pontuação usando pontuacaoFinal
@@ -319,7 +323,6 @@ function verificarVitoria() {
         painelPontuacao.className = "painel-pontuacao";
         painelPontuacao.innerHTML = `
             <div>Pontuação: <span id="contador-pontuacao">0</span></div>
-            <div>Pontuação ajustada: <span id="pontuacao-ajustada">0</span></div> <!-- ADICIONE ESTA LINHA -->
             <div>Checkpoint: <span id="contador-checkpoint">0/10</span></div>
              <div> <span id="contador-fase"></span></div>
             <div class="vidas-container">Vidas: <span id="contador-vidas">${"❤️".repeat(totalVidas)}</span></div>
@@ -481,7 +484,7 @@ iniciarGeracaoObstaculos();
     // Continuar do último checkpoint
     pontuacao = ultimoCheckpoint;
     faseAtual = checkpointAtual + 1;
-    document.getElementById("contador-pontuacao").textContent = pontuacao;
+    atualizarDisplayPontuacao();
     //document.getElementById("contador-fase").textContent = faseAtual;
     
     // Resetar o estado do personagem
@@ -507,7 +510,7 @@ iniciarGeracaoObstaculos();
     if (!jogoAtivo || perguntaAtiva) return;
 
     pontuacao++;
-    document.getElementById("contador-pontuacao").textContent = pontuacao;
+    atualizarDisplayPontuacao();
     atualizarBarraCheckpoint();
 
     // Verificar checkpoint (every 100 points)
@@ -528,9 +531,6 @@ iniciarGeracaoObstaculos();
         faseAtual = novaFase;
         atualizarVelocidadeJogo();
     }
-
-    const ajustada = calcularPontuacaoAjustada();
-document.getElementById("pontuacao-ajustada").textContent = ajustada;
 
 }
 
@@ -601,7 +601,8 @@ document.getElementById("pontuacao-ajustada").textContent = ajustada;
         
         vidas--;
         atualizarVidasUI();
-        
+        atualizarDisplayPontuacao(); // desconta na hora ao errar a pergunta
+
         if (vidas <= 0) {
             setTimeout(() => {
                 document.querySelector(".painel-perguntas").style.display = "none";
@@ -652,6 +653,7 @@ function atualizarVidasUI() {
             
             vidas--;
             atualizarVidasUI();
+            atualizarDisplayPontuacao(); // desconta na hora ao bater no obstáculo
             obstaculo.remove();
             
             if (vidas <= 0) {
@@ -714,7 +716,7 @@ function pular() {
         Mario.style.bottom = "0"; // Garantir que esteja no chão
 
         const painelGameOver = document.querySelector(".painel-game-over");
-       const pontuacaoFinal = calcularPontuacaoAjustada(); // calcular antes de usar
+       const pontuacaoFinal = calcularPontuacao(); // calcular antes de usar
        document.getElementById("pontuacao-final").textContent = pontuacaoFinal;
         if (painelGameOver) painelGameOver.style.display = "flex";
 
@@ -877,27 +879,22 @@ function agendarProximoObstaculo() {
 
     
 
-function calcularPontuacaoAjustada() {
-    // ---- O PROGRESSO É O QUE MAIS VALE ----
-    // Quanto mais longe o jogador chegou, maior a pontuação — mesmo que ele morra.
-    const pontosProgresso = pontuacao;                        // distância percorrida (até ~1000)
-    const bonusCheckpoints = checkpointAtual * 300;           // cada checkpoint alcançado vale bônus
-    const bonusConclusao = checkpointAtual >= 10 ? 2000 : 0;  // completou todos os checkpoints
-
-    const pontuacaoBase = pontosProgresso + bonusCheckpoints + bonusConclusao;
-
-    // ---- PENALIDADES LEVES E LIMITADAS ----
-    // Recompensam eficiência (menos tempo / menos vidas perdidas),
-    // mas NUNCA podem zerar uma boa jogada.
-    const tempoAtual = Date.now();
-    const tempoTotal = Math.floor((tempoAtual - tempoInicioJogo) / 1000);
+// Pontuação ÚNICA do jogo.
+// Quanto mais longe o jogador chega, mais pontos; cada vida perdida
+// (bater em obstáculo ou errar pergunta) desconta PENALIDADE_POR_VIDA.
+// Assim, quem chega ao fim perdendo menos vidas fica com nota maior.
+function calcularPontuacao() {
     const vidasPerdidas = totalVidas - vidas;
+    const bonusConclusao = checkpointAtual >= 10 ? BONUS_CONCLUSAO : 0;
 
-    let penalidade = tempoTotal + (vidasPerdidas * 50);
-    // A penalidade nunca tira mais que 40% do que o jogador já conquistou.
-    penalidade = Math.min(penalidade, Math.floor(pontuacaoBase * 0.4));
+    const total = pontuacao + bonusConclusao - (vidasPerdidas * PENALIDADE_POR_VIDA);
+    return Math.max(0, Math.floor(total)); // Nunca fica negativa
+}
 
-    return Math.max(0, Math.floor(pontuacaoBase - penalidade)); // Garante que não fique negativa
+// Atualiza o número mostrado na tela com a pontuação atual (já com descontos).
+function atualizarDisplayPontuacao() {
+    const el = document.getElementById("contador-pontuacao");
+    if (el) el.textContent = calcularPontuacao();
 }
 
 }); // Fim do DOMContentLoaded
