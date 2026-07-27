@@ -2,6 +2,38 @@
 class API {
   // Usar o mesmo domínio para evitar problemas de CORS
   static BASE_URL = window.location.origin + '/api';
+
+  // ============================================================
+  // RANKING COMPARTILHADO (Google Sheets via Google Apps Script)
+  // Cole aqui a URL do seu Web App (termina em /exec).
+  // Deixe "" para usar apenas o ranking local deste navegador.
+  static RANKING_URL = "";
+  // ============================================================
+
+  // Salva a pontuação no ranking. Tenta o Google Sheets (se configurado)
+  // e SEMPRE guarda uma cópia local como backup.
+  static async salvarPontuacao(nome, pontuacao, checkpoint) {
+    // Backup local sempre
+    try {
+      this.registrarPontuacaoPorNomeLocal(nome, pontuacao, checkpoint);
+    } catch (e) {
+      console.error('Erro ao salvar pontuação local:', e);
+    }
+
+    // Envia para o Google Sheets, se houver URL configurada
+    if (this.RANKING_URL) {
+      try {
+        await fetch(this.RANKING_URL, {
+          method: 'POST',
+          // text/plain evita o "preflight" de CORS do Apps Script
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'save', nome, pontuacao, checkpoint })
+        });
+      } catch (e) {
+        console.error('Erro ao enviar pontuação para o Google Sheets:', e);
+      }
+    }
+  }
   
   // Registrar ou recuperar usuário
   static async registrarUsuario(nome) {
@@ -39,16 +71,19 @@ class API {
     }
   }
   
-  // Obter ranking global
+  // Obter ranking global (Google Sheets se configurado, senão local)
   static async obterRanking(limite = 10, pagina = 1) {
-    try {
-      // Usar localStorage para armazenamento local (sem backend real)
-      return this.obterRankingLocal();
-    } catch (error) {
-      console.error('Erro na API:', error);
-      // Fallback para ranking local
-      return this.obterRankingLocal();
+    if (this.RANKING_URL) {
+      try {
+        const resp = await fetch(this.RANKING_URL + '?action=ranking');
+        const dados = await resp.json();
+        return { ranking: dados.ranking || [] };
+      } catch (error) {
+        console.error('Erro ao obter ranking do Google Sheets, usando local:', error);
+        return this.obterRankingLocal();
+      }
     }
+    return this.obterRankingLocal();
   }
   
   // Obter histórico de pontuações de um usuário
@@ -138,29 +173,41 @@ class API {
     };
   }
   
+  // Salva a pontuação localmente já indexada por nome do jogador.
+  static registrarPontuacaoPorNomeLocal(nome, pontuacao, checkpoint) {
+    const pontuacoes = JSON.parse(localStorage.getItem('pontuacoes_nome') || '[]');
+    pontuacoes.push({
+      nome: String(nome || 'Anônimo'),
+      pontuacao: parseInt(pontuacao, 10) || 0,
+      checkpoint: parseInt(checkpoint, 10) || 0,
+      data: new Date().toISOString()
+    });
+    localStorage.setItem('pontuacoes_nome', JSON.stringify(pontuacoes));
+  }
+
   static obterRankingLocal() {
-    const pontuacoes = JSON.parse(localStorage.getItem('pontuacoes') || '[]');
-    const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
-    
-    // Ordenar por pontuação (maior para menor)
-    pontuacoes.sort((a, b) => b.pontuacao - a.pontuacao);
-    
-    // Limitar a 10 resultados
-    const top10 = pontuacoes.slice(0, 10);
-    
-    // Formatar para o formato da API
-    const ranking = top10.map((p, index) => {
-      const usuario = usuarios.find(u => u.id === p.usuario_id);
-      return {
+    const pontuacoes = JSON.parse(localStorage.getItem('pontuacoes_nome') || '[]');
+
+    // Mantém apenas a MELHOR pontuação de cada jogador
+    const melhores = {};
+    pontuacoes.forEach(p => {
+      const nome = p.nome || 'Anônimo';
+      if (!melhores[nome] || p.pontuacao > melhores[nome].pontuacao) {
+        melhores[nome] = p;
+      }
+    });
+
+    const ranking = Object.values(melhores)
+      .sort((a, b) => b.pontuacao - a.pontuacao)
+      .slice(0, 10)
+      .map((p, index) => ({
         posicao: index + 1,
-        nome: usuario ? usuario.nome : 'Desconhecido',
+        nome: p.nome,
         pontuacao: p.pontuacao,
         checkpoint: p.checkpoint,
-        fase: p.fase,
         data: p.data
-      };
-    });
-    
+      }));
+
     return { ranking };
   }
   

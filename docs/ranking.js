@@ -15,8 +15,8 @@ class RankingManager {
         if (!this.container) return;
         this.container.innerHTML = '<p class="carregando-ranking">Carregando ranking...</p>'; // Mensagem de carregamento
         try {
-            // Usar API local para obter ranking (conforme api.js)
-            const resultado = API.obterRankingLocal(); // Chamada direta ao método local
+            // Obtém o ranking (Google Sheets se configurado, senão local)
+            const resultado = await API.obterRanking();
             this.rankingGlobal = resultado.ranking || [];
             this.renderizarRanking();
         } catch (erro) {

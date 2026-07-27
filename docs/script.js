@@ -90,8 +90,8 @@ function verificarVitoria() {
         criarAnimacaoVitoria();
 
         // Registrar pontuação usando pontuacaoFinal
-        if (usuarioId) {
-            API.registrarPontuacaoLocal(usuarioId, pontuacaoFinal, checkpointAtual, faseAtual)
+        if (nomeUsuario) {
+            API.salvarPontuacao(nomeUsuario, pontuacaoFinal, checkpointAtual)
                 .then(() => {
                     if (rankingManager) {
                         rankingManager.atualizarRanking();
@@ -759,9 +759,9 @@ function pular() {
         `;
 
         // Registrar pontuação
-        if (usuarioId) {
+        if (nomeUsuario) {
             try {
-                await API.registrarPontuacaoLocal(usuarioId, pontuacaoFinal, checkpointAtual, faseAtual);
+                await API.salvarPontuacao(nomeUsuario, pontuacaoFinal, checkpointAtual);
                 // Atualizar ranking imediatamente após registrar pontuação
                 if (rankingManager) {
                     await rankingManager.atualizarRanking();
