@@ -1,373 +1,373 @@
 // Perguntas sobre a LGPD (Lei nº 13.709/2018) com dificuldade progressiva.
 // Campos: pergunta, opcoes, resposta (índice da correta), nivel (1-5), explicacao.
 const perguntasProderj = [
-    // ----------------------- NÍVEL 1 (conceitos básicos) -----------------------
+    // ----------------------- NÍVEL 1 (fundamentos) -----------------------
     {
-        "pergunta": "O que significa a sigla LGPD?",
+        "pergunta": "A LGPD regula principalmente:",
         "opcoes": [
-            "Lei Geral de Proteção de Dados",
-            "Lei de Governança e Privacidade Digital",
-            "Legislação Geral de Proteção Digital",
-            "Lei de Gestão de Dados Públicos"
-        ],
-        "resposta": 0,
-        "nivel": 1,
-        "explicacao": "LGPD é a Lei Geral de Proteção de Dados (Lei nº 13.709/2018), que regula o tratamento de dados pessoais no Brasil."
-    },
-    {
-        "pergunta": "Qual é o principal objetivo da LGPD?",
-        "opcoes": [
-            "Regular o comércio eletrônico",
-            "Proteger os dados pessoais e a privacidade das pessoas",
-            "Combater apenas crimes cibernéticos",
-            "Fiscalizar empresas de tecnologia"
+            "A segurança de redes e sistemas de TI",
+            "O tratamento de dados pessoais",
+            "Os crimes cibernéticos",
+            "O acesso à informação pública"
         ],
         "resposta": 1,
         "nivel": 1,
-        "explicacao": "A LGPD existe para proteger os direitos fundamentais de liberdade, privacidade e a proteção dos dados pessoais das pessoas."
+        "explicacao": "A LGPD cuida do tratamento de dados pessoais. Segurança de redes, crimes cibernéticos e acesso à informação pública são temas de outras normas."
     },
     {
-        "pergunta": "Segundo a LGPD, o que é um 'dado pessoal'?",
+        "pergunta": "Segundo a LGPD, dado pessoal é:",
         "opcoes": [
-            "Qualquer informação de uma empresa",
-            "Apenas o CPF e o RG",
-            "Informação relacionada a uma pessoa natural identificada ou identificável",
-            "Somente dados bancários"
+            "Qualquer informação considerada sigilosa",
+            "Informação relacionada a pessoa natural identificada ou identificável",
+            "Apenas documentos como CPF, RG e passaporte",
+            "Toda informação guardada em um sistema"
+        ],
+        "resposta": 1,
+        "nivel": 1,
+        "explicacao": "O ponto-chave é 'identificável': um dado que, sozinho ou combinado com outros, permita chegar à pessoa (como um IP) também é pessoal."
+    },
+    {
+        "pergunta": "Qual destas alternativas NÃO é um dado pessoal?",
+        "opcoes": [
+            "O e-mail de um cliente",
+            "A geolocalização de um usuário",
+            "O CNPJ e o faturamento de uma empresa",
+            "A placa vinculada ao carro de uma pessoa"
         ],
         "resposta": 2,
         "nivel": 1,
-        "explicacao": "Dado pessoal é toda informação relacionada a uma pessoa natural identificada ou identificável — como nome, CPF, e-mail ou até um endereço IP."
+        "explicacao": "Dados de pessoa jurídica (CNPJ, faturamento) não são dados pessoais. Já e-mail, geolocalização e placa ligada a alguém identificam uma pessoa natural."
     },
     {
-        "pergunta": "Quem é o 'titular' dos dados?",
+        "pergunta": "O 'titular' dos dados é:",
         "opcoes": [
-            "A empresa que coleta os dados",
+            "Quem coleta e decide sobre os dados",
             "A pessoa natural a quem os dados se referem",
-            "O governo",
-            "O setor de TI"
+            "O encarregado pela proteção de dados",
+            "A autoridade que fiscaliza a lei"
         ],
         "resposta": 1,
         "nivel": 1,
-        "explicacao": "O titular é a pessoa natural a quem os dados pessoais dizem respeito. É ela quem detém os direitos previstos na lei."
+        "explicacao": "O titular é a pessoa a quem os dados dizem respeito. As demais opções descrevem o controlador, o encarregado e a ANPD."
     },
     {
-        "pergunta": "A LGPD se aplica a quem?",
+        "pergunta": "A LGPD se aplica:",
         "opcoes": [
-            "Apenas grandes empresas",
-            "Apenas órgãos públicos",
-            "Apenas empresas de tecnologia",
-            "Pessoas físicas e jurídicas, de direito público e privado"
+            "Apenas a empresas privadas",
+            "Apenas a órgãos públicos",
+            "Tanto a empresas privadas quanto a órgãos públicos",
+            "Apenas a empresas com mais de 100 funcionários"
         ],
-        "resposta": 3,
+        "resposta": 2,
         "nivel": 1,
-        "explicacao": "A LGPD alcança qualquer tratamento de dados feito por pessoa física ou jurídica, seja de direito público ou privado, com poucas exceções."
+        "explicacao": "A lei alcança o setor privado e o público, independentemente do porte da organização."
     },
     {
-        "pergunta": "Qual destes é um exemplo de dado pessoal?",
+        "pergunta": "O que a LGPD entende por 'tratamento' de dados?",
         "opcoes": [
-            "Nome, CPF e e-mail de uma pessoa",
-            "O CNPJ de uma empresa",
-            "Dados sobre o clima",
-            "O faturamento de uma loja"
+            "Apenas a coleta dos dados",
+            "Apenas o armazenamento em banco de dados",
+            "Quase toda operação: coleta, uso, armazenamento, compartilhamento e eliminação",
+            "Somente a venda de dados a terceiros"
         ],
-        "resposta": 0,
+        "resposta": 2,
         "nivel": 1,
-        "explicacao": "Nome, CPF e e-mail identificam uma pessoa natural, portanto são dados pessoais. Informações de empresas ou dados gerais não são dados pessoais."
+        "explicacao": "'Tratamento' é amplo: abrange praticamente tudo o que se faz com o dado, do início ao fim do seu ciclo de vida."
     },
 
     // ----------------------- NÍVEL 2 (dados sensíveis e agentes) -----------------------
     {
-        "pergunta": "O que são dados pessoais SENSÍVEIS?",
+        "pergunta": "São exemplos de dados pessoais SENSÍVEIS:",
         "opcoes": [
-            "Dados que a pessoa considera secretos",
-            "Apenas senhas e dados bancários",
-            "Dados sobre origem racial, religião, saúde, vida sexual ou opinião política",
-            "Qualquer dado de menores de idade"
-        ],
-        "resposta": 2,
-        "nivel": 2,
-        "explicacao": "Dados sensíveis são os que podem gerar discriminação: origem racial/étnica, convicção religiosa, opinião política, saúde, vida sexual, dado genético ou biométrico. Recebem proteção reforçada."
-    },
-    {
-        "pergunta": "Qual destes é um dado pessoal sensível?",
-        "opcoes": [
-            "Endereço residencial",
-            "Número de telefone",
-            "Informação sobre a saúde de uma pessoa",
-            "Data de nascimento"
-        ],
-        "resposta": 2,
-        "nivel": 2,
-        "explicacao": "Dados de saúde são sensíveis. Endereço, telefone e data de nascimento são dados pessoais comuns, sem a proteção reforçada dos sensíveis."
-    },
-    {
-        "pergunta": "Quem é o 'controlador' na LGPD?",
-        "opcoes": [
-            "Quem apenas armazena os dados",
-            "Quem toma as decisões sobre o tratamento dos dados",
-            "O titular dos dados",
-            "A ANPD"
+            "Nome completo e endereço",
+            "Dado biométrico e informação sobre saúde",
+            "CPF e número de telefone",
+            "Histórico de compras online"
         ],
         "resposta": 1,
         "nivel": 2,
-        "explicacao": "O controlador é quem decide como e por que os dados serão tratados (define as finalidades e os meios do tratamento)."
+        "explicacao": "Sensíveis são os que podem gerar discriminação (saúde, biometria, religião, etc.). Os demais são dados pessoais comuns."
     },
     {
-        "pergunta": "Quem é o 'operador' na LGPD?",
+        "pergunta": "Qual destes NÃO é um dado sensível?",
         "opcoes": [
-            "Quem define as finalidades do tratamento",
-            "Quem realiza o tratamento em nome do controlador",
-            "O dono da empresa",
-            "O titular dos dados"
-        ],
-        "resposta": 1,
-        "nivel": 2,
-        "explicacao": "O operador trata os dados seguindo as instruções do controlador — por exemplo, uma empresa contratada para processar dados em nome de outra."
-    },
-    {
-        "pergunta": "Qual a função do 'encarregado' (DPO)?",
-        "opcoes": [
-            "Fiscalizar contratos da empresa",
-            "Aprovar orçamentos de TI",
-            "Ser o canal de comunicação entre o controlador, os titulares e a ANPD",
-            "Julgar processos administrativos"
+            "Convicção religiosa",
+            "Opinião política",
+            "Endereço de e-mail",
+            "Filiação a sindicato"
         ],
         "resposta": 2,
         "nivel": 2,
-        "explicacao": "O encarregado (Data Protection Officer) é a ponte entre a organização, os titulares dos dados e a ANPD, além de orientar sobre boas práticas."
+        "explicacao": "E-mail é dado pessoal comum. Convicção religiosa, opinião política e filiação sindical são sensíveis."
     },
     {
-        "pergunta": "O que é a ANPD?",
+        "pergunta": "Uma empresa contrata um sistema de folha de pagamento na nuvem: ela define por que e como os dados serão usados, e o sistema apenas processa. Nesse caso:",
         "opcoes": [
-            "Agência Nacional de Proteção Digital",
-            "Autoridade Nacional de Proteção de Dados",
-            "Associação Nacional de Privacidade de Dados",
-            "Autarquia Nacional de Dados Públicos"
+            "Ambos são controladores",
+            "A empresa é a controladora e o sistema é o operador",
+            "O sistema é o controlador e a empresa é a operadora",
+            "Ambos são apenas operadores"
         ],
         "resposta": 1,
         "nivel": 2,
-        "explicacao": "A ANPD (Autoridade Nacional de Proteção de Dados) é o órgão responsável por fiscalizar, orientar e aplicar a LGPD no Brasil."
+        "explicacao": "Quem decide as finalidades é o controlador (a empresa); quem trata os dados seguindo instruções é o operador (o sistema contratado)."
+    },
+    {
+        "pergunta": "Sobre o encarregado (DPO), é correto dizer que:",
+        "opcoes": [
+            "É obrigatoriamente um advogado",
+            "É sempre um funcionário do setor de TI",
+            "É a pessoa ou entidade que atua como canal entre a organização, os titulares e a ANPD",
+            "É indicado diretamente pela ANPD"
+        ],
+        "resposta": 2,
+        "nivel": 2,
+        "explicacao": "O encarregado pode ser pessoa ou entidade e funciona como ponte entre a organização, os titulares e a ANPD — não precisa ser advogado nem de TI."
+    },
+    {
+        "pergunta": "A ANPD é responsável por:",
+        "opcoes": [
+            "Julgar criminalmente os responsáveis por vazamentos",
+            "Fiscalizar, orientar e aplicar sanções relativas à LGPD",
+            "Autorizar previamente toda coleta de dados",
+            "Representar os titulares em ações judiciais"
+        ],
+        "resposta": 1,
+        "nivel": 2,
+        "explicacao": "A ANPD fiscaliza, orienta e sanciona administrativamente. Ela não julga crimes (isso é do Judiciário) nem autoriza cada coleta."
+    },
+    {
+        "pergunta": "Em relação aos dados comuns, os dados sensíveis:",
+        "opcoes": [
+            "Podem ser tratados livremente",
+            "Têm regras de tratamento mais rígidas",
+            "Não podem jamais ser tratados",
+            "Só existem no setor público"
+        ],
+        "resposta": 1,
+        "nivel": 2,
+        "explicacao": "Não é proibição total: os sensíveis exigem bases legais específicas e cuidados reforçados por causa do risco de discriminação."
     },
 
-    // ----------------------- NÍVEL 3 (consentimento, princípios, bases legais) -----------------------
+    // ----------------------- NÍVEL 3 (consentimento, bases legais, princípios) -----------------------
     {
-        "pergunta": "O consentimento do titular deve ser:",
+        "pergunta": "O consentimento previsto na LGPD deve ser:",
         "opcoes": [
-            "Livre, informado e inequívoco",
-            "Verbal e informal",
-            "Permanente e irrevogável",
-            "Presumido pelo silêncio do titular"
+            "Genérico, cobrindo qualquer uso futuro",
+            "Livre, informado, inequívoco e para finalidade específica",
+            "Obtido uma única vez, valendo para sempre",
+            "Presumido quando o titular não se manifesta"
+        ],
+        "resposta": 1,
+        "nivel": 3,
+        "explicacao": "Consentimento genérico e o silêncio do titular não valem. Ele precisa ser específico, livre, informado e inequívoco."
+    },
+    {
+        "pergunta": "Sobre as bases legais para tratar dados, é correto afirmar:",
+        "opcoes": [
+            "O consentimento é sempre obrigatório",
+            "O consentimento é apenas uma entre várias bases legais",
+            "O legítimo interesse dispensa qualquer cuidado",
+            "Órgãos públicos não precisam de base legal"
+        ],
+        "resposta": 1,
+        "nivel": 3,
+        "explicacao": "A LGPD traz várias bases (obrigação legal, execução de contrato, legítimo interesse, políticas públicas, etc.). O consentimento é só uma delas."
+    },
+    {
+        "pergunta": "Uma loja coletou dados para fazer entregas e passou a usá-los para enviar propaganda não autorizada. Que princípio foi violado?",
+        "opcoes": [
+            "Segurança",
+            "Finalidade",
+            "Portabilidade",
+            "Não discriminação"
+        ],
+        "resposta": 1,
+        "nivel": 3,
+        "explicacao": "Usar o dado para um fim diferente do que foi informado viola a finalidade. (Portabilidade, aliás, é um direito do titular, não um princípio.)"
+    },
+    {
+        "pergunta": "Coletar mais dados do que o necessário para a finalidade contraria o princípio da:",
+        "opcoes": [
+            "Necessidade (minimização)",
+            "Transparência",
+            "Livre acesso",
+            "Responsabilização"
         ],
         "resposta": 0,
         "nivel": 3,
-        "explicacao": "O consentimento precisa ser livre, informado e inequívoco, dado para finalidades específicas. Silêncio ou consentimento genérico não valem."
+        "explicacao": "A minimização exige coletar apenas o estritamente necessário para a finalidade pretendida."
     },
     {
-        "pergunta": "O titular pode revogar o consentimento que deu?",
+        "pergunta": "Sobre a base legal do 'legítimo interesse', é correto afirmar:",
         "opcoes": [
-            "Não, o consentimento é definitivo",
-            "Sim, a qualquer momento, de forma facilitada e gratuita",
-            "Apenas com autorização judicial",
-            "Somente após um ano"
+            "Autoriza qualquer uso que gere lucro à empresa",
+            "Permite o tratamento desde que não prevaleçam os direitos e liberdades do titular",
+            "Dispensa qualquer avaliação ou registro",
+            "Serve inclusive para dados sensíveis"
         ],
         "resposta": 1,
         "nivel": 3,
-        "explicacao": "A revogação do consentimento é um direito do titular e pode ser feita a qualquer momento, de maneira fácil e gratuita."
+        "explicacao": "O legítimo interesse exige um balanceamento: não pode passar por cima dos direitos do titular, e não se aplica a dados sensíveis."
     },
     {
-        "pergunta": "O princípio da FINALIDADE determina que os dados sejam tratados:",
+        "pergunta": "O princípio da transparência garante ao titular:",
         "opcoes": [
-            "Para qualquer propósito da empresa",
-            "Para propósitos legítimos, específicos e informados ao titular",
-            "Somente para fins comerciais",
-            "Sem necessidade de informar o titular"
+            "O direito de acessar dados de terceiros",
+            "Informações claras e acessíveis sobre o tratamento dos seus dados",
+            "A remoção automática dos dados após 30 dias",
+            "O anonimato em qualquer situação"
         ],
         "resposta": 1,
         "nivel": 3,
-        "explicacao": "Pelo princípio da finalidade, os dados só podem ser usados para propósitos legítimos, específicos e informados ao titular — não para fins diferentes depois."
-    },
-    {
-        "pergunta": "O princípio da NECESSIDADE (minimização) diz que se deve coletar:",
-        "opcoes": [
-            "O máximo de dados possível",
-            "Apenas os dados mínimos necessários para a finalidade",
-            "Todos os dados disponíveis do titular",
-            "Somente dados sensíveis"
-        ],
-        "resposta": 1,
-        "nivel": 3,
-        "explicacao": "A minimização exige coletar apenas os dados estritamente necessários para atingir a finalidade — nada além do preciso."
-    },
-    {
-        "pergunta": "O consentimento é a ÚNICA forma de se poder tratar dados pessoais?",
-        "opcoes": [
-            "Sim, sempre é preciso consentimento",
-            "Não; há outras bases legais, como obrigação legal e legítimo interesse",
-            "Sim, exceto para o governo",
-            "Apenas para dados sensíveis"
-        ],
-        "resposta": 1,
-        "nivel": 3,
-        "explicacao": "A LGPD prevê várias bases legais além do consentimento, como cumprimento de obrigação legal, execução de contrato e legítimo interesse."
-    },
-    {
-        "pergunta": "Tratar dados pessoais sem nenhuma base legal prevista na LGPD é:",
-        "opcoes": [
-            "Permitido se for rápido",
-            "Permitido para empresas pequenas",
-            "Irregular e sujeito a sanções",
-            "Permitido com um aviso verbal"
-        ],
-        "resposta": 2,
-        "nivel": 3,
-        "explicacao": "Todo tratamento precisa se apoiar em uma base legal. Sem isso, é irregular e pode gerar sanções da ANPD."
+        "explicacao": "Transparência é dar ao titular informação clara sobre como e por que seus dados são tratados, e por quem."
     },
 
     // ----------------------- NÍVEL 4 (direitos, crianças, incidentes, anonimização) -----------------------
     {
-        "pergunta": "Qual destes é um direito do titular dos dados?",
+        "pergunta": "Qual destes NÃO é um direito do titular previsto na LGPD?",
         "opcoes": [
-            "Vender os dados de terceiros",
-            "Solicitar acesso, correção e eliminação dos seus dados",
-            "Alterar os dados de outras pessoas",
-            "Definir a política interna da empresa"
-        ],
-        "resposta": 1,
-        "nivel": 4,
-        "explicacao": "O titular pode, entre outros, confirmar a existência do tratamento, acessar, corrigir, solicitar a eliminação e a portabilidade dos seus dados."
-    },
-    {
-        "pergunta": "O direito à PORTABILIDADE permite ao titular:",
-        "opcoes": [
-            "Apagar todos os dados da internet",
-            "Transferir seus dados a outro fornecedor de serviço",
-            "Copiar dados de outras pessoas",
-            "Vender seus próprios dados"
-        ],
-        "resposta": 1,
-        "nivel": 4,
-        "explicacao": "A portabilidade permite ao titular levar seus dados de um fornecedor para outro, mediante requisição, respeitados os segredos comercial e industrial."
-    },
-    {
-        "pergunta": "O tratamento de dados de CRIANÇAS deve ser feito:",
-        "opcoes": [
-            "Livremente, sem restrições",
-            "No melhor interesse da criança e com consentimento de um dos pais ou responsável",
-            "Apenas com autorização da escola",
-            "Somente para maiores de 12 anos"
-        ],
-        "resposta": 1,
-        "nivel": 4,
-        "explicacao": "Dados de crianças exigem cuidado especial: devem ser tratados no melhor interesse dela e, em regra, com consentimento específico de um dos pais ou responsável."
-    },
-    {
-        "pergunta": "Diante de um vazamento (incidente) que possa gerar risco aos titulares, o controlador deve:",
-        "opcoes": [
-            "Ignorar se for pequeno",
-            "Resolver internamente sem avisar ninguém",
-            "Comunicar à ANPD e aos titulares afetados",
-            "Avisar apenas a imprensa"
+            "Solicitar a portabilidade dos dados",
+            "Confirmar a existência de tratamento",
+            "Impedir que a empresa cumpra uma obrigação legal de guarda",
+            "Revogar o consentimento"
         ],
         "resposta": 2,
         "nivel": 4,
-        "explicacao": "Incidentes de segurança que possam acarretar risco ou dano relevante devem ser comunicados à ANPD e aos titulares afetados, em prazo razoável."
+        "explicacao": "O titular tem muitos direitos, mas não pode impedir tratamentos que a lei exige (por exemplo, a guarda de notas fiscais)."
     },
     {
-        "pergunta": "O que é ANONIMIZAÇÃO de dados?",
+        "pergunta": "Um pedido de eliminação feito pelo titular pode ser negado quando:",
         "opcoes": [
-            "Esconder os dados com uma senha",
-            "Processo que impede a identificação do titular dos dados",
-            "Apagar todos os dados de uma vez",
-            "Criptografar os dados temporariamente"
+            "A empresa considerar os dados úteis para marketing",
+            "A lei exigir a guarda dos dados (obrigação legal ou regulatória)",
+            "O titular não pagar uma taxa",
+            "Nunca pode ser negado"
         ],
         "resposta": 1,
         "nivel": 4,
-        "explicacao": "Anonimizar é tratar o dado de modo que ele perca a possibilidade de associação a uma pessoa, por meios razoáveis. Difere da pseudonimização, que é reversível."
+        "explicacao": "Certos dados devem ser mantidos por obrigação legal, mesmo diante de um pedido de exclusão. 'Interesse de marketing' não justifica manter."
     },
     {
-        "pergunta": "Um dado verdadeiramente anonimizado, em regra:",
+        "pergunta": "No tratamento de dados de crianças e adolescentes:",
         "opcoes": [
-            "É sempre considerado sensível",
-            "Não é considerado dado pessoal, enquanto não puder ser revertido",
-            "Passa a ser um dado público",
-            "Pertence ao operador"
+            "É proibido em qualquer hipótese",
+            "Prevalece o melhor interesse, com consentimento específico de um dos pais ou responsável para crianças",
+            "Basta o consentimento da própria criança",
+            "Aplica-se somente a menores de 8 anos"
         ],
         "resposta": 1,
         "nivel": 4,
-        "explicacao": "Segundo a LGPD, o dado anonimizado não é dado pessoal — salvo se o processo puder ser revertido, permitindo reidentificar a pessoa."
+        "explicacao": "O tratamento deve atender ao melhor interesse e, para crianças, exige consentimento específico e destacado de um dos pais ou responsável."
+    },
+    {
+        "pergunta": "Após um incidente de segurança que possa gerar risco relevante aos titulares, o controlador deve comunicar:",
+        "opcoes": [
+            "Apenas internamente, à diretoria",
+            "À ANPD e aos titulares afetados, em prazo razoável",
+            "Somente à polícia",
+            "A ninguém, se resolver o problema rapidamente"
+        ],
+        "resposta": 1,
+        "nivel": 4,
+        "explicacao": "Incidentes com risco ou dano relevante devem ser comunicados à ANPD e aos titulares afetados, em prazo razoável."
+    },
+    {
+        "pergunta": "A diferença entre anonimização e pseudonimização é que:",
+        "opcoes": [
+            "São exatamente a mesma coisa",
+            "A anonimização é irreversível; a pseudonimização pode ser revertida com informação adicional",
+            "A pseudonimização apaga os dados e a anonimização os criptografa",
+            "Apenas a anonimização é prevista em lei"
+        ],
+        "resposta": 1,
+        "nivel": 4,
+        "explicacao": "Dado anonimizado, em regra, não é mais pessoal. Já o pseudonimizado pode ser reidentificado com uma informação extra — por isso continua protegido."
+    },
+    {
+        "pergunta": "Substituir o nome por um código, mas guardar a tabela que liga o código à pessoa (pseudonimização), significa que o dado:",
+        "opcoes": [
+            "Deixa de ser dado pessoal",
+            "Ainda é considerado dado pessoal",
+            "Torna-se automaticamente sensível",
+            "Passa a ser um dado público"
+        ],
+        "resposta": 1,
+        "nivel": 4,
+        "explicacao": "Como a reidentificação é possível (existe a tabela de correspondência), o dado pseudonimizado continua sendo pessoal e protegido pela LGPD."
     },
 
-    // ----------------------- NÍVEL 5 (sanções, RIPD, transferência, avançado) -----------------------
+    // ----------------------- NÍVEL 5 (sanções, RIPD, transferência, accountability) -----------------------
     {
-        "pergunta": "A fiscalização e a aplicação de sanções da LGPD cabem principalmente à:",
+        "pergunta": "Uma das sanções administrativas da LGPD é a multa simples de até:",
         "opcoes": [
-            "Polícia Federal",
-            "Receita Federal",
-            "ANPD",
-            "Apenas ao Ministério Público"
-        ],
-        "resposta": 2,
-        "nivel": 5,
-        "explicacao": "É a ANPD que fiscaliza o cumprimento da LGPD e aplica as sanções administrativas previstas na lei."
-    },
-    {
-        "pergunta": "Uma das sanções administrativas previstas na LGPD é:",
-        "opcoes": [
-            "Prisão automática do responsável",
-            "Multa de até 2% do faturamento, limitada a R$ 50 milhões por infração",
-            "Fechamento imediato da empresa",
-            "Apenas uma advertência verbal"
+            "10% do faturamento, sem limite de valor",
+            "2% do faturamento, limitada a R$ 50 milhões por infração",
+            "R$ 1.000 por titular afetado",
+            "20% do faturamento anual"
         ],
         "resposta": 1,
         "nivel": 5,
-        "explicacao": "Entre as sanções está a multa de até 2% do faturamento da empresa no Brasil, limitada a R$ 50 milhões por infração, além de advertência, bloqueio e eliminação de dados."
+        "explicacao": "A multa simples é de até 2% do faturamento da empresa no Brasil, limitada a R$ 50 milhões por infração."
     },
     {
-        "pergunta": "O Relatório de Impacto à Proteção de Dados (RIPD) serve para:",
+        "pergunta": "Além da multa, a ANPD pode aplicar sanções como:",
         "opcoes": [
-            "Registrar o faturamento da empresa",
-            "Descrever os tratamentos e os riscos à privacidade, com medidas de mitigação",
-            "Listar os funcionários da empresa",
-            "Substituir o contrato de trabalho"
+            "Prisão dos responsáveis",
+            "Advertência, bloqueio e eliminação dos dados envolvidos",
+            "Cassação automática do CNPJ",
+            "Apreensão de bens dos sócios"
         ],
         "resposta": 1,
         "nivel": 5,
-        "explicacao": "O RIPD documenta os processos de tratamento de dados que podem gerar riscos, descrevendo esses riscos e as medidas adotadas para reduzi-los."
+        "explicacao": "As sanções da LGPD são administrativas (advertência, bloqueio, eliminação, publicização, etc.) — não incluem prisão."
     },
     {
-        "pergunta": "A transferência internacional de dados pessoais é permitida:",
+        "pergunta": "O Relatório de Impacto à Proteção de Dados (RIPD) é especialmente importante quando:",
         "opcoes": [
-            "Nunca, em nenhuma hipótese",
-            "Livremente, para qualquer país",
-            "Em situações previstas na lei, como países com nível adequado de proteção",
-            "Apenas para os Estados Unidos"
-        ],
-        "resposta": 2,
-        "nivel": 5,
-        "explicacao": "A LGPD permite a transferência internacional em hipóteses específicas — por exemplo, para países com grau adequado de proteção ou mediante garantias e cláusulas contratuais."
-    },
-    {
-        "pergunta": "Quando a finalidade do tratamento acaba, os dados devem, em regra, ser:",
-        "opcoes": [
-            "Mantidos para sempre",
-            "Eliminados, salvo hipóteses legais de conservação",
-            "Vendidos a parceiros",
-            "Publicados abertamente"
+            "A empresa quer aumentar as vendas",
+            "O tratamento pode gerar riscos às liberdades e aos direitos dos titulares",
+            "Há necessidade de contratar mais funcionários",
+            "A empresa vai encerrar suas atividades"
         ],
         "resposta": 1,
         "nivel": 5,
-        "explicacao": "Encerrada a finalidade, os dados devem ser eliminados, exceto quando a lei permitir a guarda (obrigação legal, estudo, exercício de direitos, etc.)."
+        "explicacao": "O RIPD descreve os tratamentos que podem gerar riscos aos titulares e as medidas adotadas para mitigá-los."
     },
     {
-        "pergunta": "O princípio da SEGURANÇA na LGPD exige que a organização adote:",
+        "pergunta": "A transferência internacional de dados é permitida, entre outras hipóteses, quando:",
         "opcoes": [
-            "Guardar dados apenas em papel",
-            "Medidas técnicas e administrativas para proteger os dados",
-            "Compartilhar dados livremente entre setores",
-            "Não realizar cópias de segurança"
+            "A empresa simplesmente decide enviar os dados",
+            "O país de destino oferece grau de proteção adequado ou há garantias e cláusulas contratuais específicas",
+            "O destino for qualquer país da América do Sul",
+            "É proibida em qualquer caso"
         ],
         "resposta": 1,
         "nivel": 5,
-        "explicacao": "O princípio da segurança exige medidas técnicas e administrativas aptas a proteger os dados de acessos não autorizados, perdas, vazamentos ou destruição."
+        "explicacao": "A transferência exige salvaguardas: país com proteção adequada, cláusulas-padrão, consentimento específico ou outras hipóteses da lei."
+    },
+    {
+        "pergunta": "O princípio da responsabilização e prestação de contas (accountability) exige que o agente:",
+        "opcoes": [
+            "Apenas tenha um contrato assinado",
+            "Demonstre a adoção de medidas eficazes de proteção de dados",
+            "Guarde os dados por tempo indeterminado",
+            "Transfira a responsabilidade ao titular"
+        ],
+        "resposta": 1,
+        "nivel": 5,
+        "explicacao": "Não basta cumprir a lei: é preciso conseguir comprovar que se adotam medidas eficazes de proteção."
+    },
+    {
+        "pergunta": "Encerrada a finalidade do tratamento, a LGPD determina, em regra:",
+        "opcoes": [
+            "A venda dos dados para recuperar custos",
+            "A eliminação dos dados, ressalvadas as hipóteses legais de conservação",
+            "A manutenção permanente por segurança",
+            "A publicação dos dados por transparência"
+        ],
+        "resposta": 1,
+        "nivel": 5,
+        "explicacao": "Cumprida a finalidade, os dados devem ser eliminados, salvo quando a lei autorizar a guarda (obrigação legal, exercício de direitos, etc.)."
     }
 ];
