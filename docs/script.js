@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let vidas = 4;
 const totalVidas = 4;
 // Pontos descontados a cada vida perdida (bater em obstáculo ou errar pergunta)
-const PENALIDADE_POR_VIDA = 150;
+const PENALIDADE_POR_VIDA = 50;
 // Bônus por completar todos os 10 checkpoints
 const BONUS_CONCLUSAO = 500;
 let tempoInicioJogo = 0;
