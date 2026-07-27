@@ -1,0 +1,468 @@
+/* Animação de pulo */
+.Mario.pulo {
+    animation: pulo 1s ease-out; /* Duração e timing do pulo */
+}
+/* Animação de perder vida */
+@keyframes perderVida {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+
+/* Botão de pause */
+.btn-pause {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 24px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 100;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.btn-pause:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+    transform: scale(1.1);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+}
+
+.btn-pause:active {
+    transform: scale(0.95);
+}
+
+/* Painel de pause */
+.painel-pause {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    z-index: 99;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border: 3px solid #4169e1;
+    box-shadow: 0 0 30px rgba(65, 105, 225, 0.5);
+    width: 80%;
+    max-width: 400px;
+    display: none; 
+}
+
+.painel-pause h2 {
+    color: #ffd700;
+    font-size: 28px;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.btn-pause::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 50%;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.4) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .btn-pause {
+        width: 45px;
+        height: 45px;
+        font-size: 22px;
+    }
+    
+    .painel-pause {
+        padding: 25px;
+        width: 90%;
+    }
+    
+    .painel-pause h2 {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .btn-pause {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+        top: 15px;
+        right: 15px;
+    }
+    
+    .painel-pause {
+        padding: 20px;
+    }
+    
+    .painel-pause h2 {
+        font-size: 20px;
+    }
+}
+
+.animacao-perder-vida {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 0, 0, 0.3);
+    z-index: 30;
+    animation: perderVida 0.5s ease-out;
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mensagem-perder-vida {
+    font-size: 48px;
+    color: white;
+    text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+    animation: pulse 0.5s infinite alternate;
+}
+
+@keyframes pulse {
+    from { transform: scale(1); opacity: 1; }
+    to { transform: scale(1.2); opacity: 0.8; }
+}
+
+/* Efeito de tremor na tela 
+@keyframes shakeScreen {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    50% { transform: translateX(10px); }
+    75% { transform: translateX(-10px); }
+    100% { transform: translateX(0); }
+}
+
+.tela-tremendo {
+    animation: shakeScreen 0.3s linear;
+}
+*/
+/* Animação do cano */
+@keyframes animaCano {
+    from {
+        right: -80px; /* Começa fora da tela */
+    }
+    to {
+        right: 100%; /* Termina fora da tela à esquerda */
+    }
+}
+
+.obstaculo {
+    position: absolute;
+    bottom: 0;
+    width: 80px; /* Largura padrão do cano */
+    height: 200px; /* Altura padrão do cano */
+    /* A animação será aplicada via JS ou classe específica */
+    animation-duration: var(--velocidade-jogo, 2.5s); /* Usa variável CSS */
+    animation-timing-function: linear;
+    animation-iteration-count: 1; /* Animação única por cano */
+    animation-name: animaCano;
+    animation-play-state: running;
+}
+
+/* Ajustes de altura para diferentes canos (se necessário) */
+.cano-medio {
+    height: 120px;
+}
+
+.cano-alto {
+    height: 150px;
+}
+
+/* Animação de imunidade */
+@keyframes piscar {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.Mario.imunidade {
+    animation: piscar 0.2s linear infinite;
+}
+
+/* Estilos para animações de game over e fluxo de reinício */
+
+/* Animação de game over */
+.animacao-game-over {
+    position: relative;
+    width: 100%;
+    height: 150px;
+    margin: 20px 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.img-game-over {
+    width: 115px;
+    height: auto;
+    animation: shake 0.5s ease-in-out infinite, fadeIn 0.3s ease-in;
+}
+
+.texto-game-over {
+    font-size: 24px;
+    color: #ff5252;
+    margin-top: 15px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    animation: pulseText 1s ease-in-out infinite;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px) rotate(-5deg); }
+    75% { transform: translateX(5px) rotate(5deg); }
+}
+
+@keyframes pulseText {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.9; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.5); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+
+/* Animação de resposta incorreta */
+.resposta-incorreta-animacao {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 0, 0, 0.3);
+    z-index: 100;
+    animation: flashRed 0.5s ease-in-out;
+    pointer-events: none;
+}
+
+@keyframes flashRed {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+}
+
+/* Botões de reinício */
+.botoes-reinicio {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.btn-reiniciar, .btn-checkpoint {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    font-family: "Press Start 2P", system-ui, sans-serif;
+    transition: all 0.3s ease;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.btn-reiniciar:hover, .btn-checkpoint:hover {
+    background-color: #388e3c;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
+}
+
+.btn-reiniciar:active, .btn-checkpoint:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.btn-checkpoint {
+    background-color: #2196f3;
+}
+
+.btn-checkpoint:hover {
+    background-color: #1976d2;
+}
+
+/* Efeito de explosão para game over */
+.explosao {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, #ff5252, transparent);
+    border-radius: 50%;
+    opacity: 0;
+    animation: explode 0.5s ease-out forwards;
+}
+@keyframes explode {
+    0% { transform: scale(0); opacity: 1; }
+    100% { transform: scale(3); opacity: 0; }
+}
+
+/* Painel de ranking */
+.painel-ranking {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 25;
+    width: 90%;
+    max-width: 600px;
+    max-height: 400px;
+    overflow-y: auto;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+    border: 2px solid #ffd700;
+    display: none;
+}
+
+.ranking-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ffd700;
+    padding-bottom: 10px;
+}
+
+.ranking-header h3 {
+    color: #ffd700;
+    font-size: 20px;
+    margin: 0;
+}
+
+.btn-atualizar {
+    background-color: #ffd700;
+    color: #000;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s;
+}
+
+.btn-atualizar:hover {
+    background-color: #ffeb3b;
+}
+
+.ranking-tabela, .historico-tabela {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.ranking-tabela th, .historico-tabela th {
+    background-color: rgba(255, 215, 0, 0.2);
+    padding: 8px;
+    text-align: left;
+    color: #ffd700;
+}
+
+.ranking-tabela td, .historico-tabela td {
+    padding: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ranking-tabela tr:last-child td, .historico-tabela tr:last-child td {
+    border-bottom: none;
+}
+
+.destaque-usuario {
+    background-color: rgba(255, 215, 0, 0.1);
+    font-weight: bold;
+}
+
+/* Painel de histórico */
+.painel-historico {
+    margin-top: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 8px;
+    padding: 15px;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+}
+
+.historico-header {
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 5px;
+}
+
+.historico-header h3 {
+    color: #2196f3;
+    font-size: 18px;
+    margin: 0;
+}
+
+.historico-info {
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+    .ranking-tabela, .historico-tabela {
+        font-size: 12px;
+    }
+    
+    .ranking-tabela th, .historico-tabela th,
+    .ranking-tabela td, .historico-tabela td {
+        padding: 6px 4px;
+    }
+    
+    .texto-game-over {
+        font-size: 20px;
+    }
+    
+    .btn-reiniciar, .btn-checkpoint {
+        padding: 12px 15px;
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ranking-tabela, .historico-tabela {
+        font-size: 10px;
+    }
+    
+    .painel-ranking, .painel-historico {
+        padding: 10px;
+    }
+    
+    .ranking-header h3, .historico-header h3 {
+        font-size: 16px;
+    }
+    
+    .texto-game-over {
+        font-size: 18px;
+    }
+}
+

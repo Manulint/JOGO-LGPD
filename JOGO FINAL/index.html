@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mario Bros - PRODERJ Adventures</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="animacoes.css">
+</head>
+<body>
+    <!-- Tela de Login/Inicial -->
+    <div class="tela-inicial" id="tela-inicial">
+        <div class="container-login">
+            <div class="logo-container">
+                <img src="imagens/proderj_logo.png" alt="PRODERJ Logo" class="logo-proderj">
+                <img src="imagens/mario_logo.png" alt="Mario Logo" class="logo-mario">
+            </div>
+            <h1 class="titulo-principal">PRODERJ ADVENTURES</h1>
+            <p class="descricao-jogo">Uma Jornada pela Transformação Digital do Estado do Rio de Janeiro!</p>
+            <div class="input-container">
+                <label for="input-nome">Digite seu nome:</label>
+                <input type="text" id="input-nome" placeholder="Seu nome aqui..." maxlength="20">
+            </div>
+            <button id="btn-comecar" class="btn-pixel">Começar</button>
+            <button id="btn-regras" class="btn-pixel btn-secundario">Regras</button>
+            <div id="ranking-container" class="ranking-container">
+                <h2>🏆 Ranking Top 10 🏆</h2>
+                <div id="ranking-lista" class="ranking-lista">
+                    <!-- Ranking será carregado dinamicamente aqui -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tela Principal do Jogo (inicialmente oculta) -->
+    <div class="tela" id="tela-jogo" style="display: none;">
+        <div class="painel-pause" id="painel-pause" style="display: none;">
+    <h2>JOGO PAUSADO</h2>
+    <button id="btn-continuar" class="btn-pixel">CONTINUAR</button>
+    <button id="btn-voltar-menu-pause" class="btn-pixel btn-secundario">MENU PRINCIPAL</button>
+</div>
+<button id="btn-pause" class="btn-pause">⏸</button>
+        <div class="marca-dagua"></div>
+        <img src="imagens/mario.gif" class="Mario">
+        <!-- Obstáculos serão adicionados dinamicamente aqui -->
+        <!-- Elementos da UI (pontuação, game over, perguntas) serão adicionados pelo JS -->
+    </div>
+
+    <!-- Modal de Regras (inicialmente oculto) -->
+    <div id="modal-regras" class="modal">
+        <div class="modal-conteudo">
+            <span class="fechar-modal" id="fechar-regras">&times;</span>
+            <h2>📜 Regras do Jogo 📜</h2>
+            <div class="regras-texto">
+                <p><strong>Objetivo:</strong> Corra o máximo que puder com o Mario, desviando dos obstáculos e respondendo corretamente às perguntas sobre as normas do PRODERJ nos checkpoints para ganhar imunidade e continuar!</p>
+                <p><strong>Controles:</strong> Pressione a <strong>Barra de Espaço</strong> ou <strong>clique/toque</strong> na tela para fazer o Mario pular.</p>
+                <p><strong>Pontuação:</strong> Você ganha pontos continuamente enquanto corre.</p>
+                <p><strong>Obstáculos:</strong> Canos, Goombas e outros perigos aparecerão. Pule sobre eles para sobreviver!</p>
+                <p><strong>Checkpoints:</strong> Ao atingir certas pontuações, você chegará a um checkpoint. O jogo pausará e uma pergunta sobre as normas do PRODERJ será exibida.</p>
+                <p><strong>Quiz PRODERJ:</strong> Responda à pergunta corretamente para ganhar um período de <strong>imunidade</strong> temporária contra colisões e continuar o jogo. Se errar, é Game Over!</p>
+                <p><strong>Imunidade:</strong> Durante a imunidade, o Mario piscará e você não perderá se colidir com um obstáculo. Aproveite para avançar!</p>
+                <p><strong>Pulo na Imunidade:</strong> Você pode pular normalmente mesmo durante o período de imunidade.</p>
+                <p><strong>Game Over:</strong> O jogo termina se você colidir com um obstáculo (fora do período de imunidade) ou errar uma pergunta do checkpoint.</p>
+                <p><strong>Ranking:</strong> Sua melhor pontuação será salva no ranking local. Tente chegar ao topo!</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script src="ranking.js"></script>
+    <script src="perguntas_proderj.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

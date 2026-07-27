@@ -1,0 +1,809 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Press Start 2P', system-ui, sans-serif;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body {
+    background: linear-gradient(to bottom, #000033, #333366);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    color: #fff;
+}
+.tela {
+    position: relative;
+    z-index: 1;
+}
+
+/* Checkpoint progress bar */
+.checkpoint-bar-container {
+    width: 100%;
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+/* Animação de vitória */
+@keyframes confetti {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+}
+
+.tela-vitoria {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    flex-direction: column;
+    font-family: 'Press Start 2P', cursive;
+    color: #fff;
+    text-align: center;
+    display: none;
+}
+
+
+
+.mensagem-vitoria {
+    background: rgba(74, 76, 173, 0.9);
+    padding: 30px;
+    border-radius: 16px;
+    animation: fadeInUp 0.8s ease;
+    box-shadow: 0 0 20px #00f;
+    z-index: 101;
+}
+
+.confetti {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: #f00;
+    opacity: 0;
+    animation: confetti 3s ease-in forwards;
+}
+
+/* Cores variadas para os confetes */
+.confetti:nth-child(2n) { background-color: #0f0; }
+.confetti:nth-child(3n) { background-color: #00f; }
+.confetti:nth-child(4n) { background-color: #ff0; }
+.confetti:nth-child(5n) { background-color: #f0f; }
+.confetti:nth-child(6n) { background-color: #0ff; }
+
+.btn-vitoria {
+    background-color: #ffd700;
+    color: #000;
+    border: none;
+    padding: 15px 30px;
+    margin-top: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: 'Press Start 2P', cursive;
+    transition: all 0.3s;
+    z-index: 101;
+}
+
+.btn-vitoria:hover {
+    background-color: #ffeb3b;
+    transform: scale(1.05);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+.checkpoint-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(to right, #4169e1, #4caf50);
+    border-radius: 5px;
+    transition: width 0.1s linear;
+}
+
+/* Lives display */
+.vidas-container {
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+/* --- Tela Inicial --- */
+.tela-inicial {
+    width: 100%;
+    max-width: 800px;
+    padding: 40px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    border: 3px solid #ffd700; /* Borda dourada */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('imagens/proderj_bg.png');
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: overlay;
+}
+
+.container-login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.logo-proderj {
+    width: 520px;
+    height: auto;
+    margin-bottom: 5px;
+}
+
+.logo-mario {
+    width: 120px;
+    height: auto;
+}
+
+.titulo-principal {
+    color: #3d3af1; /* Azul PRODERJ */
+    font-size: 32px;
+    text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    letter-spacing: 2px;
+    margin-bottom: 0;
+}
+
+.subtitulo-principal {
+    color: #4169e1; /* Azul PRODERJ */
+    font-size: 24px;
+    text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    letter-spacing: 1px;
+    margin-top: 5px;
+}
+
+
+.descricao-jogo {
+    font-size: 14px;
+    color: #eee;
+    line-height: 1.5;
+    max-width: 80%;
+    margin: 15px auto;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.input-container label {
+    font-size: 14px;
+    color: #ccc;
+}
+
+.input-container input[type="text"] {
+    padding: 12px 15px;
+    border: 2px solid #4169e1; /* Azul PRODERJ */
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    font-family: 'Press Start 2P', system-ui, sans-serif;
+    font-size: 14px;
+    width: 100%;
+    text-align: center;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.input-container input[type="text"]:focus {
+    outline: none;
+    border-color: #ffd700;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.btn-pixel {
+    background-color: #4caf50; /* Verde */
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    box-shadow: 0 4px #388e3c; /* Sombra para efeito 3D */
+    position: relative;
+    top: 0;
+}
+
+.btn-pixel:hover {
+    background-color: #388e3c;
+    top: 2px; /* Efeito de pressionar */
+    box-shadow: 0 2px #388e3c;
+    transform: scale(1.03);
+}
+
+.btn-pixel:active {
+    top: 4px;
+    box-shadow: none;
+}
+
+.btn-secundario {
+    background-color: #4169e1; /* Azul PRODERJ */
+    box-shadow: 0 4px #1e3a8a;
+}
+
+.btn-secundario:hover {
+    background-color: #1e3a8a;
+    box-shadow: 0 2px #1e3a8a;
+}
+
+/* --- Ranking Styles --- */
+.ranking-container {
+    margin-top: 30px;
+    width: 100%;
+    max-width: 500px; /* Limita largura máxima */
+    background-color: rgba(10, 10, 30, 0.8); /* Fundo escuro azulado */
+    padding: 25px;
+    border-radius: 10px;
+    border: 2px solid #ffd700; /* Borda dourada */
+    box-shadow: 0 5px 20px rgba(255, 215, 0, 0.3);
+}
+
+.ranking-container h2 {
+    color: #ffd700;
+    font-size: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    text-shadow: 2px 2px 0 #000;
+}
+
+#ranking-lista {
+    max-height: 250px; /* Aumenta altura máxima */
+    overflow-y: auto;
+    padding-right: 10px; /* Espaço para scrollbar */
+    /* Estilização da scrollbar (opcional, pode variar entre navegadores) */
+    scrollbar-width: thin;
+    scrollbar-color: #ffd700 rgba(10, 10, 30, 0.8);
+}
+
+#ranking-lista::-webkit-scrollbar {
+    width: 8px;
+}
+
+#ranking-lista::-webkit-scrollbar-track {
+    background: rgba(10, 10, 30, 0.8);
+    border-radius: 4px;
+}
+
+#ranking-lista::-webkit-scrollbar-thumb {
+    background-color: #ffd700;
+    border-radius: 4px;
+    border: 1px solid rgba(10, 10, 30, 0.8);
+}
+
+.ranking-tabela {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px; /* Aumenta um pouco o tamanho da fonte */
+}
+
+.ranking-tabela th,
+.ranking-tabela td {
+    padding: 10px 15px; /* Aumenta padding */
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.3); /* Linha dourada sutil */
+}
+
+.ranking-tabela th {
+    background-color: rgba(255, 215, 0, 0.1); /* Fundo levemente dourado */
+    color: #ffd700;
+    text-align: center;
+}
+
+.ranking-tabela td {
+    color: #eee;
+}
+
+.ranking-tabela tr:last-child td {
+    border-bottom: none;
+}
+
+.ranking-tabela .posicao {
+    text-align: center;
+    font-weight: bold;
+    color: #ffd700;
+    width: 50px; /* Largura fixa para posição */
+}
+
+.ranking-tabela .nome {
+    color: #fff; /* Nome em branco para destaque */
+    font-weight: normal;
+}
+
+.ranking-tabela .pontuacao {
+    text-align: right;
+    font-weight: bold;
+    color: #90EE90; /* Verde claro para pontos */
+    width: 100px; /* Largura fixa para pontuação */
+}
+
+/* Destaques Top 3 */
+.ranking-tabela tr.rank-1 td {
+    background-color: rgba(255, 215, 0, 0.2); /* Fundo dourado */
+    font-weight: bold;
+}
+.ranking-tabela tr.rank-1 .posicao {
+    color: #fff;
+    text-shadow: 0 0 5px #ffd700;
+}
+
+.ranking-tabela tr.rank-2 td {
+    background-color: rgba(192, 192, 192, 0.15); /* Fundo prateado */
+}
+.ranking-tabela tr.rank-2 .posicao {
+    color: #c0c0c0;
+}
+
+.ranking-tabela tr.rank-3 td {
+    background-color: rgba(205, 127, 50, 0.15); /* Fundo bronze */
+}
+.ranking-tabela tr.rank-3 .posicao {
+    color: #cd7f32;
+}
+
+/* Mensagens de estado */
+.carregando-ranking,
+.erro-ranking,
+.sem-pontuacoes {
+    text-align: center;
+    color: #ccc;
+    font-size: 14px;
+    padding: 20px;
+}
+
+/* --- Tela do Jogo --- */
+.tela {
+    width: 100%;
+    max-width: 1500px;
+    height: 700px;
+    margin: auto;
+    border-bottom: #000000 15px solid; /* Azul PRODERJ */
+    position: relative;
+    background: linear-gradient(#303d8a, #694492);
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border-radius: 10px 10px 0 0;
+}
+
+/* Marca d'água PRODERJ */
+.marca-dagua {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('imagens/proderj_watermark.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 40%;
+    opacity: 0.5; /* Aumentada a opacidade */
+    pointer-events: none;
+    z-index: 2;
+}
+
+.obstaculo {
+    position: absolute;
+    bottom: 0; /* Garante que o obstáculo comece no chão */
+    z-index: 5; /* Atrás do Mario */
+    filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.3));
+}
+
+.cano-baixo, .cano-medio, .cano-alto {
+    width: 800px;
+    animation: animaCano 1.8s infinite linear;
+}
+
+/* Adicionar classes específicas se necessário para altura */
+.cano-baixo { height: 400px; } /* Exemplo */
+.cano-medio { height: 150px; } /* Exemplo */
+.cano-alto { height: 200px; } /* Exemplo */
+
+@keyframes animaCano {
+    from { right: -80px; }
+    to { right: 100%; }
+}
+
+.Mario {
+    width: 150px; /* Tamanho do personagem */
+    position: absolute;
+    bottom: 0;
+    left: 50px;
+    transition: transform 0.1s;
+    filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2));
+    z-index: 10;
+}
+
+.pulo {
+    animation: marioPulando 500ms ease-out;
+}
+
+@keyframes marioPulando {
+    0% {bottom: 0; transform: rotate(0deg);}
+    20% {transform: rotate(-5deg);}
+    50% {bottom: 250px; transform: rotate(0deg);}
+    80% {transform: rotate(5deg);}
+    100% {bottom: 0; transform: rotate(0deg);}
+}
+
+.imunidade {
+    animation: piscar 0.3s infinite alternate;
+}
+.btn-pixel:hover {
+    transform: scale(1.05);
+    transition: transform 0.2s ease-in-out;
+}
+
+@keyframes piscar {
+    from { opacity: 1; }
+    to { opacity: 0.5; }
+}
+
+
+/* --- Elementos da UI no Jogo --- */
+.painel-pontuacao {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: rgba(10, 10, 30, 0.8); /* Fundo escuro */
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    border: 1px solid #4169e1;
+}
+
+.checkpoint-bar-container {
+    width: 150px; /* Largura da barra */
+    height: 8px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    margin-top: 5px;
+    overflow: hidden;
+}
+
+.checkpoint-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(to right, #4169e1, #ffd700); /* Gradiente azul para dourado */
+    border-radius: 4px;
+    transition: width 0.1s linear;
+}
+
+.vidas-container {
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+.painel-game-over {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    z-index: 50;
+    display: none; /* Controlado por JS */
+    flex-direction: column;
+    gap: 15px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    border: 2px solid #ff5252;
+    min-width: 350px;
+}
+
+.painel-game-over h2 {
+    color: #ff5252;
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.painel-game-over p {
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.painel-game-over button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s;
+    font-family: 'Press Start 2P', system-ui, sans-serif;
+}
+
+.painel-game-over button:hover {
+    background-color: #388e3c;
+    transform: scale(1.05);
+}
+
+.animacao-game-over img {
+    width: 80px;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+.painel-game-over .btn-pixel {
+    margin: 5px;
+}
+
+.painel-perguntas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 25px;
+    border-radius: 10px;
+    text-align: center;
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: 0 0 30px rgba(65, 105, 225, 0.5); /* Azul PRODERJ */
+    border: 3px solid #4169e1; /* Azul PRODERJ */
+    width: 90%;
+    max-width: 700px;
+    max-height: 90%;
+    overflow-y: auto;
+}
+
+.painel-perguntas h2 {
+    color: #4169e1; /* Azul PRODERJ */
+    font-size: 24px;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.pergunta-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.pergunta-container p {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+#opcoes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.opcao-btn {
+    background-color: #4169e1; /* Azul PRODERJ */
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: left;
+    transition: all 0.2s;
+    line-height: 1.4;
+    font-family: 'Press Start 2P', system-ui, sans-serif;
+}
+
+.opcao-btn:hover {
+    background-color: #1e3a8a;
+    transform: translateX(5px);
+}
+
+.resposta-correta {
+    background-color: #4caf50 !important;
+    border: 2px solid #fff;
+}
+
+.resposta-incorreta {
+    background-color: #f44336 !important;
+    border: 2px solid #fff;
+}
+
+/* --- Modal de Regras --- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-conteudo {
+    background-color: #222;
+    margin: auto;
+    padding: 30px;
+    border: 3px solid #4169e1;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 700px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    position: relative;
+    color: #eee;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), url('imagens/proderj_bg.png');
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: overlay;
+}
+
+.fechar-modal {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 32px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.fechar-modal:hover,
+.fechar-modal:focus {
+    color: #fff;
+    text-decoration: none;
+}
+
+.modal-conteudo h2 {
+    color: #4169e1;
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 24px;
+}
+
+.regras-texto p {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.regras-texto strong {
+    color: #4169e1;
+}
+
+/* --- Responsividade --- */
+@media (max-width: 768px) {
+    .tela-inicial {
+        padding: 30px;
+        max-width: 95%;
+    }
+    .titulo-principal { font-size: 28px; }
+    .descricao-jogo { font-size: 13px; }
+    .btn-pixel { font-size: 14px; padding: 12px 25px; }
+    .ranking-container h2 { font-size: 18px; }
+    .ranking-tabela { font-size: 12px; }
+    .ranking-tabela th, .ranking-tabela td { padding: 8px 10px; }
+
+    .tela { height: 500px; max-width: 95%; }
+    .Mario { width: 120px; }
+    .cano-baixo, .cano-medio, .cano-alto { width: 60px; }
+    .painel-pontuacao { font-size: 12px; padding: 8px 12px; }
+    .painel-perguntas h2 { font-size: 20px; }
+    .pergunta-container p { font-size: 14px; }
+    .opcao-btn { font-size: 13px; padding: 12px; }
+    .modal-conteudo { padding: 20px; }
+    .modal-conteudo h2 { font-size: 20px; }
+    .regras-texto p { font-size: 13px; }
+}
+
+@media (max-width: 480px) {
+    body { padding: 10px; }
+    .tela-inicial { padding: 20px; }
+    .titulo-principal { font-size: 22px; }
+    .descricao-jogo { font-size: 12px; }
+    .input-container input[type="text"] { font-size: 12px; padding: 10px 12px; }
+    .btn-pixel { font-size: 12px; padding: 10px 20px; }
+    .ranking-container { padding: 15px; }
+    .ranking-container h2 { font-size: 16px; }
+    .ranking-tabela { font-size: 11px; }
+    .ranking-tabela th, .ranking-tabela td { padding: 6px 8px; }
+    .ranking-tabela .posicao { width: 35px; }
+    .ranking-tabela .pontuacao { width: 70px; }
+
+    .tela { height: 400px; }
+    .Mario { width: 100px; }
+    .cano-baixo, .cano-medio, .cano-alto { width: 50px; }
+    .painel-pontuacao { font-size: 11px; padding: 6px 10px; gap: 3px; }
+    .checkpoint-bar-container { width: 100px; height: 6px; }
+    .painel-perguntas { padding: 15px; max-width: 90%; }
+    .painel-perguntas h2 { font-size: 18px; }
+    .pergunta-container p { font-size: 13px; }
+    .opcao-btn { font-size: 12px; padding: 10px; }
+    .modal-conteudo { width: 95%; padding: 15px; }
+    .modal-conteudo h2 { font-size: 18px; }
+    .regras-texto p { font-size: 12px; }
+}
+@media (max-width: 768px) {
+    .btn-pause {
+        width: 35px;
+        height: 35px;
+        font-size: 20px;
+        top: 15px;
+        right: 15px;
+    }
+    
+    .painel-pause {
+        padding: 20px;
+        width: 90%;
+    }
+    
+    .painel-pause h2 {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .btn-pause {
+        width: 30px;
+        height: 30px;
+        font-size: 18px;
+        top: 10px;
+        right: 10px;
+    }
+    
+    .painel-pause {
+        padding: 15px;
+    }
+    
+    .painel-pause h2 {
+        font-size: 20px;
+    }
+}
+
+
